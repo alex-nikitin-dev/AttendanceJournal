@@ -35,6 +35,8 @@ namespace AttendanceJournal
 
             NavigationView navigationView = FindViewById<NavigationView>(Resource.Id.nav_view);
             navigationView.SetNavigationItemSelectedListener(this);
+
+            //new text
         }
 
         public override void OnBackPressed()
