@@ -10,7 +10,8 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using System.Security.Cryptography;
-
+using MySql.Data.MySqlClient;
+using System.Data;
 namespace AttendanceJournal
 {
     [Activity(Label = "@string/app_name", Theme = "@style/MyTheme.Login", MainLauncher = true)]
@@ -32,20 +33,30 @@ namespace AttendanceJournal
 
         public void DoLogin(object sender, EventArgs e)
         {
-            var pwdHash = HashSHA512(password.Text);
-            var pwdHashOrigin = HashSHA512("12345");
-
-            if (email.Text == "main@gmail.com" && pwdHash == pwdHashOrigin)
+            try
             {
-                Toast.MakeText(this, "Login successfully done!", ToastLength.Long).Show();
-                StartActivity(typeof(MainActivity));
+                var pwdHash = HashSHA512(password.Text);
+                var pwdHashOrigin = DataBaseHelper.GetUserPwdHash(email.Text);
+
+                if (!String.IsNullOrEmpty(pwdHashOrigin) &&
+                    pwdHashOrigin == pwdHash)
+                {
+                    Toast.MakeText(this, "Login successfully done!", ToastLength.Long).Show();
+                    StartActivity(typeof(MainActivity));
+                }
+                else
+                {
+                    Toast.MakeText(this, "Wrong credentials found!", ToastLength.Long).Show();
+                }
             }
-            else
-            {  
-                Toast.MakeText(this, "Wrong credentials found!", ToastLength.Long).Show();
+            catch (MySqlException)
+            {
+
+                Toast.MakeText(this, "Could not connect to database server", ToastLength.Long).Show();
             }
+           
         }
-        public static string HashSHA512(string value)
+        public string HashSHA512(string value)
         {
             using (var sha = SHA512.Create())
             {

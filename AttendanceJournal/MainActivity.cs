@@ -80,28 +80,7 @@ namespace AttendanceJournal
 
             if (id == Resource.Id.nav_camera)
             {
-                try
-                {
-                    //MySqlConnection mySqlConnection = new MySqlConnection("Server=192.168.1.100;database=JournalDB;User Id=journaluser;Password=J1r5_jOngksnL_n8l11!;charset=utf8");
-                    MySqlConnection mySqlConnection = new MySqlConnection("Server=specowka.ddns.net; Port=13110;database=JournalDB;User Id=journaluser;Password=J1r5_jOngksnL_n8l11!;charset=utf8");
-                    if (mySqlConnection.State == ConnectionState.Closed)
-                    {
-                        mySqlConnection.Open();
-
-                        MySqlCommand mySqlCommand = new MySqlCommand(
-                            "INSERT INTO UserGroup (GroupName) " +
-                            "VALUES ('1151')",
-                            mySqlConnection);
-                        mySqlCommand.ExecuteNonQuery();
-                        mySqlConnection.Close();
-
-                        Toast.MakeText(Application.Context, "OK", ToastLength.Long).Show();
-                    }
-                }
-                catch (Exception e)
-                {
-                    Toast.MakeText(Application.Context, e.Message, ToastLength.Long).Show();
-                }
+                
             }
             else if (id == Resource.Id.nav_gallery)
             {
