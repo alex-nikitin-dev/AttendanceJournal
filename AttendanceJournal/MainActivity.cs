@@ -14,7 +14,7 @@ using System.Data;
 
 namespace AttendanceJournal
 {
-    [Activity(Label = "@string/app_name", Theme = "@style/AppTheme.NoActionBar", MainLauncher = true)]
+    [Activity(Label = "@string/app_name", Theme = "@style/AppTheme.NoActionBar")]
     public class MainActivity : AppCompatActivity, NavigationView.IOnNavigationItemSelectedListener
     {
         protected override void OnCreate(Bundle savedInstanceState)
@@ -80,28 +80,7 @@ namespace AttendanceJournal
 
             if (id == Resource.Id.nav_camera)
             {
-                try
-                {
-                    //MySqlConnection mySqlConnection = new MySqlConnection("Server=192.168.1.100;database=JournalDB;User Id=journaluser;Password=J1r5_jOngksnL_n8l11!;charset=utf8");
-                    MySqlConnection mySqlConnection = new MySqlConnection("Server=specowka.ddns.net; Port=13110;database=JournalDB;User Id=journaluser;Password=J1r5_jOngksnL_n8l11!;charset=utf8");
-                    if (mySqlConnection.State == ConnectionState.Closed)
-                    {
-                        mySqlConnection.Open();
-
-                        MySqlCommand mySqlCommand = new MySqlCommand(
-                            "INSERT INTO UserGroup (GroupName) " +
-                            "VALUES ('1151')",
-                            mySqlConnection);
-                        mySqlCommand.ExecuteNonQuery();
-                        mySqlConnection.Close();
-
-                        Toast.MakeText(Application.Context, "OK", ToastLength.Long).Show();
-                    }
-                }
-                catch (Exception e)
-                {
-                    Toast.MakeText(Application.Context, e.Message, ToastLength.Long).Show();
-                }
+                
             }
             else if (id == Resource.Id.nav_gallery)
             {
@@ -117,7 +96,14 @@ namespace AttendanceJournal
             }
             else if (id == Resource.Id.nav_share)
             {
-
+                if (SwitchVisibility() == false)
+                {
+                    item.SetTitle("Show What you've just hid");
+                }
+                else
+                {
+                    item.SetTitle("Hide it, now!");
+                }
             }
             else if (id == Resource.Id.nav_send)
             {
@@ -127,6 +113,13 @@ namespace AttendanceJournal
             DrawerLayout drawer = FindViewById<DrawerLayout>(Resource.Id.drawer_layout);
             drawer.CloseDrawer(GravityCompat.Start);
             return true;
+        }
+        public bool SwitchVisibility()
+        {
+            NavigationView navigationView = FindViewById<NavigationView>(Resource.Id.nav_view);
+            var navSlideShow =  navigationView.Menu.FindItem(Resource.Id.nav_slideshow);
+            navSlideShow.SetVisible(navSlideShow.IsVisible ? false : true);
+            return navSlideShow.IsVisible;
         }
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
         {
