@@ -11,6 +11,8 @@ using Android.Views;
 using Android.Widget;
 using MySql.Data.MySqlClient;
 using System.Data;
+using static Android.App.ActionBar;
+using Android.Content;
 
 namespace AttendanceJournal
 {
@@ -73,35 +75,39 @@ namespace AttendanceJournal
             Snackbar.Make(view, "Replace with your own action", Snackbar.LengthLong)
                 .SetAction("Action", (Android.Views.View.IOnClickListener)null).Show();
         }
-
+       
         public bool OnNavigationItemSelected(IMenuItem item)
         {
             int id = item.ItemId;
 
             if (id == Resource.Id.nav_camera)
             {
-                try
-                {
-                    //MySqlConnection mySqlConnection = new MySqlConnection("Server=192.168.1.100;database=JournalDB;User Id=journaluser;Password=J1r5_jOngksnL_n8l11!;charset=utf8");
-                    MySqlConnection mySqlConnection = new MySqlConnection("Server=specowka.ddns.net; Port=13110;database=JournalDB;User Id=journaluser;Password=J1r5_jOngksnL_n8l11!;charset=utf8");
-                    if (mySqlConnection.State == ConnectionState.Closed)
-                    {
-                        mySqlConnection.Open();
 
-                        MySqlCommand mySqlCommand = new MySqlCommand(
-                            "INSERT INTO UserGroup (GroupName) " +
-                            "VALUES ('1151')",
-                            mySqlConnection);
-                        mySqlCommand.ExecuteNonQuery();
-                        mySqlConnection.Close();
+                Intent intent = new Intent(this,typeof(AddNewStudent));
+                StartActivity(intent);
 
-                        Toast.MakeText(Application.Context, "OK", ToastLength.Long).Show();
-                    }
-                }
-                catch (Exception e)
-                {
-                    Toast.MakeText(Application.Context, e.Message, ToastLength.Long).Show();
-                }
+                //try
+                //{
+                //    //MySqlConnection mySqlConnection = new MySqlConnection("Server=192.168.1.100;database=JournalDB;User Id=journaluser;Password=J1r5_jOngksnL_n8l11!;charset=utf8");
+                //    MySqlConnection mySqlConnection = new MySqlConnection("Server=specowka.ddns.net; Port=13110;database=JournalDB;User Id=journaluser;Password=J1r5_jOngksnL_n8l11!;charset=utf8");
+                //    if (mySqlConnection.State == ConnectionState.Closed)
+                //    {
+                //        mySqlConnection.Open();
+
+                //        MySqlCommand mySqlCommand = new MySqlCommand(
+                //            "INSERT INTO UserGroup (GroupName) " +
+                //            "VALUES ('1151')",
+                //            mySqlConnection);
+                //        mySqlCommand.ExecuteNonQuery();
+                //        mySqlConnection.Close();
+
+                //        Toast.MakeText(Application.Context, "OK", ToastLength.Long).Show();
+                //    }
+                //}
+                //catch (Exception e)
+                //{
+                //    Toast.MakeText(Application.Context, e.Message, ToastLength.Long).Show();
+                //}
             }
             else if (id == Resource.Id.nav_gallery)
             {
@@ -128,6 +134,9 @@ namespace AttendanceJournal
             drawer.CloseDrawer(GravityCompat.Start);
             return true;
         }
+
+       
+
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
         {
             Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
