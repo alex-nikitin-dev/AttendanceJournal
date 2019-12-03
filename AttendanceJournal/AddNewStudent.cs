@@ -26,9 +26,11 @@ namespace AttendanceJournal
         }
         private void AddStd_Click(object sender, EventArgs e)
         {
-            EditText name = FindViewById<EditText>(Resource.Id.dean_newStd_Name);
-            string name1 = name.Text;
-            Toast.MakeText(Application.Context, name1, ToastLength.Long).Show();
+            string name = FindViewById<EditText>(Resource.Id.dean_newStd_Name).Text;
+            string phone = FindViewById<EditText>(Resource.Id.dean_newStd_Phone).Text;
+            string group = FindViewById<EditText>(Resource.Id.dean_newStd_GroupNumber).Text;
+            string year = FindViewById<EditText>(Resource.Id.dean_newStd_StartYear).Text;
+            Toast.MakeText(Application.Context, name+" "+phone+" "+group+" "+year, ToastLength.Long).Show();
             Finish();
 
             //try

@@ -111,7 +111,8 @@ namespace AttendanceJournal
             }
             else if (id == Resource.Id.nav_gallery)
             {
-
+                Intent intent = new Intent(this, typeof(DeanViewStudent));
+                StartActivity(intent);
             }
             else if (id == Resource.Id.nav_slideshow)
             {
