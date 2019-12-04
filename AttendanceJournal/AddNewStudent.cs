@@ -18,7 +18,7 @@ namespace AttendanceJournal
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            SetContentView(Resource.Layout.dean_add_new_student);
+            SetContentView(Resource.Layout.dean_add_new_studend);
             Button addStd = FindViewById<Button>(Resource.Id.dean_newStd_Button_Add);
             addStd.Click += AddStd_Click;
 

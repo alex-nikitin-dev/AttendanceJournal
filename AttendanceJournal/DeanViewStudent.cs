@@ -1,12 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 using Android.App;
 using Android.Content;
 using Android.OS;
-using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 
@@ -26,13 +22,10 @@ namespace AttendanceJournal
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
-            // Set our view from the "main" layout resource  
-            //SetContentView(Resource.Layout.dean_view_student);
             SetContentView(Resource.Layout.dean_view_group);
             List<Group> objgroup = new List<Group>();
             objgroup.Add(new Group { group = 1151});
             objgroup.Add(new Group { group = 2151 });
-            //grouplistView = FindViewById<ListView>(Resource.Id.dean_group_LV);
             grouplistView = FindViewById<ListView>(Resource.Id.dean_group_viewList);
            
             grouplist = new List<Group>();

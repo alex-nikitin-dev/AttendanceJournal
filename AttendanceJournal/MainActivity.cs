@@ -16,7 +16,7 @@ using Android.Content;
 
 namespace AttendanceJournal
 {
-    [Activity(Label = "@string/app_name", Theme = "@style/AppTheme.NoActionBar", MainLauncher = true)]
+    [Activity(Label = "@string/app_name", Theme = "@style/AppTheme.NoActionBar")]
     public class MainActivity : AppCompatActivity, NavigationView.IOnNavigationItemSelectedListener
     {
         protected override void OnCreate(Bundle savedInstanceState)
@@ -83,6 +83,7 @@ namespace AttendanceJournal
             if (id == Resource.Id.nav_camera)
             {
 
+
                 Intent intent = new Intent(this,typeof(AddNewStudent));
                 StartActivity(intent);
 
@@ -108,6 +109,7 @@ namespace AttendanceJournal
                 //{
                 //    Toast.MakeText(Application.Context, e.Message, ToastLength.Long).Show();
                 //}
+
             }
             else if (id == Resource.Id.nav_gallery)
             {
@@ -124,7 +126,14 @@ namespace AttendanceJournal
             }
             else if (id == Resource.Id.nav_share)
             {
-
+                if (SwitchVisibility() == false)
+                {
+                    item.SetTitle("Show What you've just hid");
+                }
+                else
+                {
+                    item.SetTitle("Hide it, now!");
+                }
             }
             else if (id == Resource.Id.nav_send)
             {
@@ -136,7 +145,13 @@ namespace AttendanceJournal
             return true;
         }
 
-       
+        public bool SwitchVisibility()
+        {
+            NavigationView navigationView = FindViewById<NavigationView>(Resource.Id.nav_view);
+            var navSlideShow =  navigationView.Menu.FindItem(Resource.Id.nav_slideshow);
+            navSlideShow.SetVisible(navSlideShow.IsVisible ? false : true);
+            return navSlideShow.IsVisible;
+        }
 
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
         {
