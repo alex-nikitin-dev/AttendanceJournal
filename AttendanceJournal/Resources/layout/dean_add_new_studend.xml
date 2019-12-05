@@ -25,7 +25,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/dean_newStd_Phone" />
     <EditText
-        android:hint="Group Number"
+        android:hint="Group Number without cource (151)"
         android:inputType="numberSigned"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

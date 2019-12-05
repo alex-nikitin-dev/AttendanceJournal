@@ -27,33 +27,43 @@ namespace AttendanceJournal
         private void AddStd_Click(object sender, EventArgs e)
         {
             string name = FindViewById<EditText>(Resource.Id.dean_newStd_Name).Text;
-            string phone = FindViewById<EditText>(Resource.Id.dean_newStd_Phone).Text;
-            string group = FindViewById<EditText>(Resource.Id.dean_newStd_GroupNumber).Text;
-            string year = FindViewById<EditText>(Resource.Id.dean_newStd_StartYear).Text;
+            int phone = int.Parse( FindViewById<EditText>(Resource.Id.dean_newStd_Phone).Text);
+            int group = int.Parse(FindViewById<EditText>(Resource.Id.dean_newStd_GroupNumber).Text);
+            int year = int.Parse(FindViewById<EditText>(Resource.Id.dean_newStd_StartYear).Text);
             Toast.MakeText(Application.Context, name+" "+phone+" "+group+" "+year, ToastLength.Long).Show();
-            Finish();
-
-            //try
-            //{
-            //    MySqlConnection mySqlConnection = new MySqlConnection("Server=specowka.ddns.net; Port=13110;database=JournalDB;User Id=journaluser;Password=J1r5_jOngksnL_n8l11!;charset=utf8");
-            //    if (mySqlConnection.State == ConnectionState.Closed)
-            //    {
-            //        mySqlConnection.Open();
-
-            //        MySqlCommand mySqlCommand = new MySqlCommand(
-            //            "INSERT INTO UserGroup (GroupName) " +
-            //            "VALUES ('1151')",
-            //            mySqlConnection);
-            //        mySqlCommand.ExecuteNonQuery();
-            //        mySqlConnection.Close();
-
-            //        Toast.MakeText(Application.Context, "OK", ToastLength.Long).Show();
-            //    }
-            //}
-            //catch (Exception e)
-            //{
-            //    Toast.MakeText(Application.Context, e.Message, ToastLength.Long).Show();
-            //}
+            
+            if (DataBaseHelper.IsServerAlive())
+            {
+                DataBaseHelper.AddNewStudent(name,group,year,phone);
+                Toast.MakeText(this, "New student is added!", ToastLength.Long).Show();
+                //StartActivity(typeof(MainActivity));
+            }
+            else
+            {
+                Toast.MakeText(this, "Server isn't alive", ToastLength.Long).Show();
+            }
+            Finish(); 
         }
     }
 }
+//try
+//{
+//    MySqlConnection mySqlConnection = new MySqlConnection("Server=specowka.ddns.net; Port=13110;database=JournalDB;User Id=journaluser;Password=J1r5_jOngksnL_n8l11!;charset=utf8");
+//    if (mySqlConnection.State == ConnectionState.Closed)
+//    {
+//        mySqlConnection.Open();
+
+//        MySqlCommand mySqlCommand = new MySqlCommand(
+//            "INSERT INTO UserGroup (GroupName) " +
+//            "VALUES ('1151')",
+//            mySqlConnection);
+//        mySqlCommand.ExecuteNonQuery();
+//        mySqlConnection.Close();
+
+//        Toast.MakeText(Application.Context, "OK", ToastLength.Long).Show();
+//    }
+//}
+//catch (Exception e)
+//{
+//    Toast.MakeText(Application.Context, e.Message, ToastLength.Long).Show();
+//}

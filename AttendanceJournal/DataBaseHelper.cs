@@ -18,6 +18,18 @@ namespace AttendanceJournal
         {
             return new MySqlConnection($"Server={Address};Port={Port};database={DBName};User Id={Id};Password={Pwd};charset=utf8");
         }
+        public static void AddNewStudent(string name, int group ,int year, int phone)
+        {
+            using (var con = GetNewConnection())
+            {
+                con.Open();
+                MySqlCommand cmd = new MySqlCommand(
+                           "INSERT INTO JournalDB.Student(NameOfStudent, GroupID, Phone, Head, UserID) " +
+                           $"VALUES('{ name }', '{group * 10000 + year}', '{phone}', '0', '3');", con);
+                cmd.ExecuteNonQuery();
+                con.Close();
+            }
+        }
 
         public static string GetUserPwdHash(string login)
         {
