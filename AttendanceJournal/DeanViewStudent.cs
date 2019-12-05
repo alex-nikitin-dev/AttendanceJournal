@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Android.App;
 using Android.Content;
 using Android.OS;
+using Android.Support.Design.Widget;
 using Android.Views;
 using Android.Widget;
 
@@ -23,18 +24,53 @@ namespace AttendanceJournal
         {
             base.OnCreate(bundle);
             SetContentView(Resource.Layout.dean_view_group);
-            List<Group> objgroup = new List<Group>();
-            objgroup.Add(new Group { group = 1151});
-            objgroup.Add(new Group { group = 2151 });
+            //List<Group> objgroup = new List<Group>();
+            //objgroup.Add(new Group { group = 1151});
+            //objgroup.Add(new Group { group = 2151 });
             grouplistView = FindViewById<ListView>(Resource.Id.dean_group_viewList);
            
             grouplist = new List<Group>();
-            grouplist = objgroup;
+            grouplist = DataBaseHelper.GetListOfGroup();
           
             groupAdapter = new GroupAdapter(this, grouplist);
             
             grouplistView.Adapter = groupAdapter;
             grouplistView.ItemClick += GrouplistView_ItemClick;
+            FloatingActionButton fab = FindViewById<FloatingActionButton>(Resource.Id.fab_add_group);
+            fab.Click += FabAddGroupOnClick;
+            
+        }
+
+        private void FabAddGroupOnClick(object sender, EventArgs e)
+        {
+            SetContentView(Resource.Layout.dean_add_new_group);
+            Button addGroiup = FindViewById<Button>(Resource.Id.dean_addGroup_AddButton);
+            addGroiup.Click += ButtonAddGroup;
+        }
+        private void ButtonAddGroup(object sender, EventArgs e)
+        {
+            int course = int.Parse(FindViewById<EditText>(Resource.Id.dean_addGroup_Course).Text);
+            int groupNumber = int.Parse(FindViewById<EditText>(Resource.Id.dean_addGroup_GroupNumber).Text);
+            int year = int.Parse(FindViewById<EditText>(Resource.Id.dean_addGroup_EntryYear).Text);
+
+            if (DataBaseHelper.IsServerAlive())
+            {
+                if (DataBaseHelper.GetGroupID(groupNumber, year) == -1)
+                {
+                    DataBaseHelper.AddNewGroup(course, groupNumber, year);
+                    Toast.MakeText(this, "New group is added!", ToastLength.Long).Show();
+                }
+                else
+                {
+                    Toast.MakeText(this, "That group is exist already", ToastLength.Long).Show();
+                }
+            }
+            else
+            {
+                Toast.MakeText(this, "Server isn't alive", ToastLength.Long).Show();
+            }
+            Finish();
+
         }
 
         private void GrouplistView_ItemClick(object sender, AdapterView.ItemClickEventArgs e)
@@ -74,11 +110,17 @@ namespace AttendanceJournal
     
     public class Group
     {
+     public int course
+        {
+            get;
+            set;
+        }
         public int group
         {
             get;
             set;
         }
+
     }
     public class GroupAdapter : BaseAdapter<Group>
     {
@@ -120,7 +162,7 @@ namespace AttendanceJournal
                     row = LayoutInflater.From(sContext).Inflate(Resource.Layout.dean_view_student, null, false);
                 }
                 TextView txtName = row.FindViewById<TextView>(Resource.Id.Name);
-                txtName.Text = gList[position].group.ToString();
+                txtName.Text = gList[position].course.ToString()+gList[position].group.ToString();
             }
             catch (Exception ex)
             {

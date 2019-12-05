@@ -30,6 +30,73 @@ namespace AttendanceJournal
                 con.Close();
             }
         }
+        public static void AddNewGroup( int course, int groupNumber, int year)
+        {
+            using (var con = GetNewConnection())
+            {
+                con.Open();
+                MySqlCommand cmd = new MySqlCommand(
+                           "INSERT INTO JournalDB.GroupOfStudents(Course, numberOfGroup, EntryYear) " +
+                           $"VALUES('{ course }', '{groupNumber}', '{year}');", con);
+                cmd.ExecuteNonQuery();
+                con.Close();
+            }
+
+        }
+        //
+        public static List<Group> GetListOfGroup()
+        {
+            List<Group> listRes = new List<Group>();
+            using (var con = GetNewConnection())
+            {
+                con.Open();
+                MySqlCommand cmd = new MySqlCommand(
+                           "SELECT Course, NumberOfGroup " +
+                           "FROM JournalDB.GroupOfStudents ",
+                           con);
+                using (var reader = cmd.ExecuteReader())
+                {
+
+                    for (int i = 0; reader.Read(); i++)
+                    {
+                        listRes.Add(new Group { 
+                            course = (int)reader.GetUInt32(reader.GetOrdinal("Course")),
+                            group = (int)reader.GetInt32(reader.GetOrdinal("NumberOfGroup"))}) ;   
+                    }
+                }
+                con.Close();
+            }
+            return listRes;
+        }
+        public static int GetGroupID(int group, int year )
+        {
+            int result = -1;
+            using (var con = GetNewConnection())
+            {
+                con.Open();
+                MySqlCommand cmd = new MySqlCommand(
+                           "SELECT ID " +
+                           "FROM JournalDB.GroupOfStudents " +
+                           $"WHERE NumberOfGroup='{group}' AND Entryyear='{year}';",
+                           con);
+                using (var reader = cmd.ExecuteReader())
+                {
+
+                    for (int i = 0; reader.Read(); i++)
+                    {
+                        if (i > 0)
+                        {
+                            throw new Exception("database error: group is not unique");
+                        }
+                        result = (int)reader.GetValue(0);
+                    }
+                }
+                con.Close();
+            }
+
+            return result;
+
+        }
 
         public static string GetUserPwdHash(string login)
         {
