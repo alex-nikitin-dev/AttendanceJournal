@@ -82,12 +82,14 @@ namespace AttendanceJournal
 
             if (id == Resource.Id.nav_dean_students)
             {
-                Intent intent = new Intent(this,typeof(AddNewStudent));
+                Intent intent = new Intent(this, typeof(DeanViewStudent));
                 StartActivity(intent);
+                //Intent intent = new Intent(this,typeof(AddNewStudent));
+                //StartActivity(intent);
             }
             else if (id == Resource.Id.nav_dean_journal)
             {
-                Intent intent = new Intent(this, typeof(DeanViewStudent));
+                Intent intent = new Intent(this, typeof(DeanViewJournal));
                 StartActivity(intent);
             }
             else if (id == Resource.Id.nav_dean_subjects)

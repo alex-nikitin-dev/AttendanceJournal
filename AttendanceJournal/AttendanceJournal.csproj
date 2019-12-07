@@ -64,6 +64,7 @@
     <Compile Include="AddNewStudent.cs" />
     <Compile Include="DeanViewStudent.cs" />
     <Compile Include="DataBaseHelper.cs" />
+    <Compile Include="DeanViewJournal.cs" />
     <Compile Include="LoginActivity.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="Resources\Resource.designer.cs" />

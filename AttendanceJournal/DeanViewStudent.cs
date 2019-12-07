@@ -24,9 +24,6 @@ namespace AttendanceJournal
         {
             base.OnCreate(bundle);
             SetContentView(Resource.Layout.dean_view_group);
-            //List<Group> objgroup = new List<Group>();
-            //objgroup.Add(new Group { group = 1151});
-            //objgroup.Add(new Group { group = 2151 });
             grouplistView = FindViewById<ListView>(Resource.Id.dean_group_viewList);
            
             grouplist = new List<Group>();
@@ -37,6 +34,10 @@ namespace AttendanceJournal
             grouplistView.Adapter = groupAdapter;
             grouplistView.ItemClick += GrouplistView_ItemClick;
             FloatingActionButton fab = FindViewById<FloatingActionButton>(Resource.Id.fab_add_group);
+            if (!fab.IsShown)
+            {
+                fab.Show();
+            }
             fab.Click += FabAddGroupOnClick;
             
         }
@@ -55,7 +56,7 @@ namespace AttendanceJournal
 
             if (DataBaseHelper.IsServerAlive())
             {
-                if (DataBaseHelper.GetGroupID(groupNumber, year) == -1)
+                if (DataBaseHelper.GetGroupIDByNumberAndYear(groupNumber, year) == -1)
                 {
                     DataBaseHelper.AddNewGroup(course, groupNumber, year);
                     Toast.MakeText(this, "New group is added!", ToastLength.Long).Show();
@@ -76,28 +77,15 @@ namespace AttendanceJournal
         private void GrouplistView_ItemClick(object sender, AdapterView.ItemClickEventArgs e)
         {
             SetContentView(Resource.Layout.dean_view_student);
-            List<Students> objstud = new List<Students>();
-            objstud.Add(new Students
-            {
-                Name = "Suresh",
-                Age = 26
-            });
-            objstud.Add(new Students
-            {
-                Name = "C#Cornet",
-                Age = 26
-            });
             studentlistView = FindViewById<ListView>(Resource.Id.demolist);
             mlist = new List<Students>();
-            mlist = objstud;
+            var selectcorse = grouplist[e.Position].course;
+            var selectgroup = grouplist[e.Position].group;
+            var groupId = DataBaseHelper.GetGroupIDByCorseAndNumber(selectcorse, selectgroup);
+            mlist = DataBaseHelper.GetListOfStudentsByGroupID(groupId);
             stAdapter = new StudentAdapter(this, mlist);
             studentlistView.Adapter = stAdapter;
-            studentlistView.ItemClick += StudentlistView_ItemClick;
 
-
-            //var select = grouplist[e.Position].group;
-            //var s2 = mlist[e.Position].Name + " " + mlist[e.Position].Age;
-            //Toast.MakeText(this, s2, ToastLength.Long).Show();
         }
 
         private void StudentlistView_ItemClick(object sender, AdapterView.ItemClickEventArgs e)
@@ -173,18 +161,29 @@ namespace AttendanceJournal
         }
     }
     public class Students
-{
-    public string Name
     {
-        get;
-        set;
+        public string Name
+        {
+            get;
+            set;
+        }
+        public int Group
+        {
+            get;
+            set;
+        }
+        public int Phone
+        {
+            get;
+            set;
+        }
+        public bool Head
+        {
+            get;
+            set;
+        }
+        
     }
-    public int Age
-    {
-        get;
-        set;
-    }
-}
     public class StudentAdapter : BaseAdapter<Students>
     {
         public List<Students> sList;
@@ -222,7 +221,7 @@ namespace AttendanceJournal
                 row = LayoutInflater.From(sContext).Inflate(Resource.Layout.dean_view_student, null, false);
                 }
             TextView txtName = row.FindViewById<TextView>(Resource.Id.Name);
-                txtName.Text = sList[position].Name +" "+ sList[position].Age;
+                txtName.Text = sList[position].Name;
             }
             catch (Exception ex)
             {

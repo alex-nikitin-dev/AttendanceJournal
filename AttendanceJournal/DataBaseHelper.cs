@@ -68,7 +68,67 @@ namespace AttendanceJournal
             }
             return listRes;
         }
-        public static int GetGroupID(int group, int year )
+        public static List<Students> GetListOfStudentsByGroupID(int groupID)
+        {
+            List<Students> listRes = new List<Students>();
+            using (var con = GetNewConnection())
+            {
+                con.Open();
+                MySqlCommand cmd = new MySqlCommand(
+                           "SELECT NameOfStudent, GroupID, Phone, Head " +
+                           "FROM JournalDB.Student "+
+                           $"WHERE GroupID='{groupID}'",
+                           con);
+                using (var reader = cmd.ExecuteReader())
+                {
+
+                    for (int i = 0; reader.Read(); i++)
+                    {
+                        listRes.Add(new Students
+                        {
+                            Name = reader.GetString(reader.GetOrdinal("NameOfStudent")),
+                            Group = reader.GetInt32(reader.GetOrdinal("GroupID")),
+                            Phone = reader.GetInt32(reader.GetOrdinal("Phone")),
+                            Head = reader.GetBoolean(reader.GetOrdinal("Head"))
+
+                        });
+                    }
+                }
+                con.Close();
+            }
+
+            return listRes;
+        }
+        public static int GetGroupIDByCorseAndNumber(int corse, int groupNumber)
+        {
+            int result = -1;
+            using (var con = GetNewConnection())
+            {
+                con.Open();
+                MySqlCommand cmd = new MySqlCommand(
+                           "SELECT ID " +
+                           "FROM JournalDB.GroupOfStudents " +
+                           $"WHERE NumberOfGroup='{groupNumber}' AND Corse='{corse}';",
+                           con);
+                using (var reader = cmd.ExecuteReader())
+                {
+
+                    for (int i = 0; reader.Read(); i++)
+                    {
+                        if (i > 0)
+                        {
+                            throw new Exception("database error: group is not unique");
+                        }
+                        result = (int)reader.GetValue(0);
+                    }
+                }
+                con.Close();
+            }
+
+            return result;
+
+        }
+        public static int GetGroupIDByNumberAndYear(int group, int year )
         {
             int result = -1;
             using (var con = GetNewConnection())
