@@ -3,36 +3,42 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
 
-    <group android:checkableBehavior="single">
-        <item
-            android:id="@+id/nav_camera"
-            android:icon="@drawable/ic_menu_camera"
-            android:title="Import1" />
-        <item
-            android:id="@+id/nav_gallery"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="Gallery" />
-        <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="Slideshow"/>
-        <item
-            android:id="@+id/nav_manage"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="Tools" />
-    </group>
+  <group android:checkableBehavior="single">
+    <item
+        android:id="@+id/nav_dean_students"
+        android:title="Students" />
+    <item
+        android:id="@+id/nav_dean_journal"
+        android:title="Journals" />
+    <item
+        android:id="@+id/nav_dean_subjects"
+        android:title="Subjects" />
+    <item
+        android:id="@+id/nav_dean_professors"
+        android:title="Professors"/>
+    <item
+        android:id="@+id/nav_gLeader_students"
+        android:title="Students" />
+    <item
+         android:id="@+id/nav_gLeader_subjects"
+         android:title="Subjects" />
+    <item
+        android:id="@+id/nav_gLeader_professors"
+        android:title="Professors"/>
+  </group>
 
-    <item android:title="Communicate">
-        <menu>
-            <item
-                android:id="@+id/nav_share"
-                android:icon="@drawable/ic_menu_share"
-                android:title="SwitchVisibility" />
-            <item
-                android:id="@+id/nav_send"
-                android:icon="@drawable/ic_menu_send"
-                android:title="Send" />
-        </menu>
-    </item>
+  <item android:title="Journals">
+    <menu>
+      <item
+          android:id="@+id/nav_gLeader_day"
+          android:title="Day" />
+      <item
+          android:id="@+id/nav_gLeader_week"
+          android:title="Week" />
+      <item
+            android:id="@+id/nav_gLeader_semestr"
+            android:title="Semestr" />
+    </menu>
+  </item>
 
 </menu>

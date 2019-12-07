@@ -80,64 +80,57 @@ namespace AttendanceJournal
         {
             int id = item.ItemId;
 
-            if (id == Resource.Id.nav_camera)
+            if (id == Resource.Id.nav_dean_students)
             {
-
-
                 Intent intent = new Intent(this,typeof(AddNewStudent));
                 StartActivity(intent);
-
-                //try
-                //{
-                //    //MySqlConnection mySqlConnection = new MySqlConnection("Server=192.168.1.100;database=JournalDB;User Id=journaluser;Password=J1r5_jOngksnL_n8l11!;charset=utf8");
-                //    MySqlConnection mySqlConnection = new MySqlConnection("Server=specowka.ddns.net; Port=13110;database=JournalDB;User Id=journaluser;Password=J1r5_jOngksnL_n8l11!;charset=utf8");
-                //    if (mySqlConnection.State == ConnectionState.Closed)
-                //    {
-                //        mySqlConnection.Open();
-
-                //        MySqlCommand mySqlCommand = new MySqlCommand(
-                //            "INSERT INTO UserGroup (GroupName) " +
-                //            "VALUES ('1151')",
-                //            mySqlConnection);
-                //        mySqlCommand.ExecuteNonQuery();
-                //        mySqlConnection.Close();
-
-                //        Toast.MakeText(Application.Context, "OK", ToastLength.Long).Show();
-                //    }
-                //}
-                //catch (Exception e)
-                //{
-                //    Toast.MakeText(Application.Context, e.Message, ToastLength.Long).Show();
-                //}
-
             }
-            else if (id == Resource.Id.nav_gallery)
+            else if (id == Resource.Id.nav_dean_journal)
             {
                 Intent intent = new Intent(this, typeof(DeanViewStudent));
                 StartActivity(intent);
             }
-            else if (id == Resource.Id.nav_slideshow)
+            else if (id == Resource.Id.nav_dean_subjects)
             {
 
             }
-            else if (id == Resource.Id.nav_manage)
+            else if (id == Resource.Id.nav_dean_professors)
             {
 
             }
-            else if (id == Resource.Id.nav_share)
+            else if (id == Resource.Id.nav_gLeader_students)
             {
-                if (SwitchVisibility() == false)
-                {
-                    item.SetTitle("Show What you've just hid");
-                }
-                else
-                {
-                    item.SetTitle("Hide it, now!");
-                }
+                //There is menu for Group Leader 
             }
-            else if (id == Resource.Id.nav_send)
+            else if (id == Resource.Id.nav_gLeader_subjects)
             {
+                //There is menu for Group Leader 
+            }
+            else if (id == Resource.Id.nav_gLeader_professors)
+            {
+                //There is menu for Group Leader 
+            }
+            else if (id == Resource.Id.nav_gLeader_day)
+            {
+                //There is menu for Group Leader 
+            }
+            else if (id == Resource.Id.nav_gLeader_week)
+            {
+                //There is menu for Group Leader 
 
+
+                //if (SwitchVisibility() == false)
+                //{
+                //    item.SetTitle("Show What you've just hid");
+                //}
+                //else
+                //{
+                //    item.SetTitle("Hide it, now!");
+                //}
+            }
+            else if (id == Resource.Id.nav_gLeader_semestr)
+            {
+                //There is menu for Group Leader 
             }
 
             DrawerLayout drawer = FindViewById<DrawerLayout>(Resource.Id.drawer_layout);
@@ -148,7 +141,7 @@ namespace AttendanceJournal
         public bool SwitchVisibility()
         {
             NavigationView navigationView = FindViewById<NavigationView>(Resource.Id.nav_view);
-            var navSlideShow =  navigationView.Menu.FindItem(Resource.Id.nav_slideshow);
+            var navSlideShow =  navigationView.Menu.FindItem(Resource.Id.nav_gLeader_week);
             navSlideShow.SetVisible(navSlideShow.IsVisible ? false : true);
             return navSlideShow.IsVisible;
         }
