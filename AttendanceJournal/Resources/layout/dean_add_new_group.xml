@@ -1,0 +1,34 @@
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TextView
+        android:text="Add New Group"
+        android:textSize = "25dp"
+        android:textAlignment= "center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/abc_action_bar_content_inset_material"/>
+    <EditText
+        android:id="@+id/dean_addGroup_Course"
+        android:hint="Course"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"/>
+    <EditText
+        android:id="@+id/dean_addGroup_GroupNumber"
+        android:hint="Group number without course (151)"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <EditText
+        android:id="@+id/dean_addGroup_EntryYear"
+        android:hint="Entry year"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <Button
+        android:text="Add" 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/dean_addGroup_AddButton" />
+
+</LinearLayout>

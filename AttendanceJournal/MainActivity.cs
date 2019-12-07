@@ -11,6 +11,8 @@ using Android.Views;
 using Android.Widget;
 using MySql.Data.MySqlClient;
 using System.Data;
+using static Android.App.ActionBar;
+using Android.Content;
 
 namespace AttendanceJournal
 {
@@ -73,54 +75,77 @@ namespace AttendanceJournal
             Snackbar.Make(view, "Replace with your own action", Snackbar.LengthLong)
                 .SetAction("Action", (Android.Views.View.IOnClickListener)null).Show();
         }
-
+       
         public bool OnNavigationItemSelected(IMenuItem item)
         {
             int id = item.ItemId;
 
-            if (id == Resource.Id.nav_camera)
+            if (id == Resource.Id.nav_dean_students)
             {
-                
+                Intent intent = new Intent(this,typeof(AddNewStudent));
+                StartActivity(intent);
             }
-            else if (id == Resource.Id.nav_gallery)
+            else if (id == Resource.Id.nav_dean_journal)
+            {
+                Intent intent = new Intent(this, typeof(DeanViewStudent));
+                StartActivity(intent);
+            }
+            else if (id == Resource.Id.nav_dean_subjects)
             {
 
             }
-            else if (id == Resource.Id.nav_slideshow)
+            else if (id == Resource.Id.nav_dean_professors)
             {
 
             }
-            else if (id == Resource.Id.nav_manage)
+            else if (id == Resource.Id.nav_gLeader_students)
             {
-
+                //There is menu for Group Leader 
             }
-            else if (id == Resource.Id.nav_share)
+            else if (id == Resource.Id.nav_gLeader_subjects)
             {
-                if (SwitchVisibility() == false)
-                {
-                    item.SetTitle("Show What you've just hid");
-                }
-                else
-                {
-                    item.SetTitle("Hide it, now!");
-                }
+                //There is menu for Group Leader 
             }
-            else if (id == Resource.Id.nav_send)
+            else if (id == Resource.Id.nav_gLeader_professors)
             {
+                //There is menu for Group Leader 
+            }
+            else if (id == Resource.Id.nav_gLeader_day)
+            {
+                //There is menu for Group Leader 
+            }
+            else if (id == Resource.Id.nav_gLeader_week)
+            {
+                //There is menu for Group Leader 
 
+
+                //if (SwitchVisibility() == false)
+                //{
+                //    item.SetTitle("Show What you've just hid");
+                //}
+                //else
+                //{
+                //    item.SetTitle("Hide it, now!");
+                //}
+            }
+            else if (id == Resource.Id.nav_gLeader_semestr)
+            {
+                //There is menu for Group Leader 
             }
 
             DrawerLayout drawer = FindViewById<DrawerLayout>(Resource.Id.drawer_layout);
             drawer.CloseDrawer(GravityCompat.Start);
             return true;
         }
+
         public bool SwitchVisibility()
         {
             NavigationView navigationView = FindViewById<NavigationView>(Resource.Id.nav_view);
-            var navSlideShow =  navigationView.Menu.FindItem(Resource.Id.nav_slideshow);
+            var navSlideShow =  navigationView.Menu.FindItem(Resource.Id.nav_gLeader_week);
             navSlideShow.SetVisible(navSlideShow.IsVisible ? false : true);
             return navSlideShow.IsVisible;
         }
+
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
         {
             Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
