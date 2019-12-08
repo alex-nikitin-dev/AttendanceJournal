@@ -18,7 +18,7 @@ namespace AttendanceJournal
         {
             return new MySqlConnection($"Server={Address};Port={Port};database={DBName};User Id={Id};Password={Pwd};charset=utf8");
         }
-        public static void AddNewStudent(string name, int group , int phone)
+        public static void AddNewStudent(string name, int group, int phone)
         {
             using (var con = GetNewConnection())
             {
@@ -59,7 +59,7 @@ namespace AttendanceJournal
         }
         public static string GetNameOfSubgectByID(int Id)
         {
-            string res=null;
+            string res = null;
             using (var con = GetNewConnection())
             {
                 con.Open();
@@ -86,7 +86,7 @@ namespace AttendanceJournal
         }
         public static List<Subject> GetListOfSubject()
         {
-            List < Subject > res = new List<Subject>();
+            List<Subject> res = new List<Subject>();
             using (var con = GetNewConnection())
             {
                 con.Open();
@@ -101,7 +101,7 @@ namespace AttendanceJournal
                     {
                         res.Add(new Subject
                         {
-                            nameofSubject = (string)reader.GetString(reader.GetOrdinal("NameOfSubject"))          
+                            nameofSubject = (string)reader.GetString(reader.GetOrdinal("NameOfSubject"))
                         });
                     }
                 }
@@ -122,7 +122,7 @@ namespace AttendanceJournal
             }
 
         }
-        public static void AddNewGroup( int course, int groupNumber, int year)
+        public static void AddNewGroup(int course, int groupNumber, int year)
         {
             using (var con = GetNewConnection())
             {
@@ -151,9 +151,9 @@ namespace AttendanceJournal
 
                     for (int i = 0; reader.Read(); i++)
                     {
-                        listRes.Add(new Group { 
+                        listRes.Add(new Group {
                             course = (int)reader.GetUInt32(reader.GetOrdinal("Course")),
-                            group = (int)reader.GetInt32(reader.GetOrdinal("NumberOfGroup"))}) ;   
+                            group = (int)reader.GetInt32(reader.GetOrdinal("NumberOfGroup")) });
                     }
                 }
                 con.Close();
@@ -168,7 +168,7 @@ namespace AttendanceJournal
                 con.Open();
                 MySqlCommand cmd = new MySqlCommand(
                            "SELECT NameOfStudent, GroupID, Phone, Head " +
-                           "FROM JournalDB.Student "+
+                           "FROM JournalDB.Student " +
                            $"WHERE GroupID='{groupID}'",
                            con);
                 using (var reader = cmd.ExecuteReader())
@@ -220,7 +220,7 @@ namespace AttendanceJournal
             return result;
 
         }
-        public static int GetGroupIDByNumberAndYear(int group, int year )
+        public static int GetGroupIDByNumberAndYear(int group, int year)
         {
             int result = -1;
             using (var con = GetNewConnection())
@@ -249,8 +249,46 @@ namespace AttendanceJournal
             return result;
 
         }
+    public static List<Professor> GetListOfProfessors()
+        {
+            List < Professor > res = new List<Professor>();
+            using (var con = GetNewConnection())
+            {
+                con.Open();
+                MySqlCommand cmd = new MySqlCommand(
+                           "SELECT NameOfProfessor, Phone, Room " +
+                           "FROM JournalDB.Professor; ",con);
+                using (var reader = cmd.ExecuteReader())
+                {
 
-        public static string GetUserPwdHash(string login)
+                    for (int i = 0; reader.Read(); i++)
+                    {
+                        res.Add(new Professor
+                        {
+                            nameOfProfessor = reader.GetString(reader.GetOrdinal("NameOfProfessor")),
+                            phone = reader.GetInt32(reader.GetOrdinal("Phone")),
+                            room = reader.GetInt32(reader.GetOrdinal("Room"))
+                        }); ;
+                    }
+                }
+                con.Close();
+            }
+
+            return res;
+        }
+        public static void AddNewProfessor(string name, int phone, int room)
+        {
+            using (var con = GetNewConnection())
+            {
+                con.Open();
+                MySqlCommand cmd = new MySqlCommand(
+                           "INSERT INTO JournalDB.Professor(NameOfProfessor, Phone,Room) " +
+                           $"VALUES('{ name }', '{phone}','{room}');", con);
+                cmd.ExecuteNonQuery();
+                con.Close();
+            }
+        }
+    public static string GetUserPwdHash(string login)
         {
             string result = string.Empty;
             using (var con = GetNewConnection())

@@ -6,27 +6,32 @@
     android:minWidth="25px"
     android:minHeight="25px">
     <TextView
-        android:text="Информация о новом студенте"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:layout_width="match_parent"
+         android:layout_marginTop="10dp"
+        android:text="Add new student"
+        android:layout_gravity="center"
+        android:textSize="25dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/dean_newStd_Information"
         android:layout_marginBottom="@dimen/abc_edit_text_inset_bottom_material" />
     <EditText
         android:hint="Name"
+        android:textSize="25dp"
         android:inputType="textPersonName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/dean_newStd_Name" />
     <EditText
-        android:hint="Phone"
+        android:hint="Phone format(960000000)"
+        android:textSize="25dp"
         android:inputType="phone"
-        android:maxLength = "10"
+        android:maxLength = "9"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/dean_newStd_Phone" />
     <EditText
         android:hint="Group Number without cource (151)"
+        android:textSize="25dp"
         android:inputType="numberSigned"
         android:maxLength = "3"
         android:layout_width="match_parent"
@@ -34,6 +39,7 @@
         android:id="@+id/dean_newStd_GroupNumber" />
     <EditText
         android:hint="Year"
+        android:textSize="25dp"
         android:inputType="numberSigned"
         android:maxLength = "4"
         android:layout_width="match_parent"

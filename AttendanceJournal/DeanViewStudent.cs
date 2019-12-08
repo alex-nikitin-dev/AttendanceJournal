@@ -42,7 +42,7 @@ namespace AttendanceJournal
         private void FabAddGroupOnClick(object sender, EventArgs e)
         {
             SetContentView(Resource.Layout.dean_add_new_group);
-            Button addGroiup = FindViewById<Button>(Resource.Id.dean_newStd_Button_Add);
+            Button addGroiup = FindViewById<Button>(Resource.Id.dean_addGroup_AddButton);
             addGroiup.Click += ButtonAddGroup;
         }
         private void ButtonAddGroup(object sender, EventArgs e)
