@@ -27,25 +27,21 @@ namespace AttendanceJournal
         {
             base.OnCreate(bundle);
             SetContentView(Resource.Layout.dean_view_group);
-            grouplistView = FindViewById<ListView>(Resource.Id.dean_group_viewList);
-            FloatingActionButton fab = FindViewById<FloatingActionButton>(Resource.Id.fab_add_group);
-            if (fab.IsShown)
-            {
-                fab.Hide();
-            }
-
+            grouplistView = FindViewById<ListView>(Resource.Id.dean_group_viewList);          
             grouplist = new List<Group>();
             grouplist = DataBaseHelper.GetListOfGroup();
-
             groupAdapter = new GroupAdapter(this, grouplist);
-
             grouplistView.Adapter = groupAdapter;
             grouplistView.ItemClick += GrouplistView_ItemClick;
+            FloatingActionButton fab = FindViewById<FloatingActionButton>(Resource.Id.fab_add_group);
+            fab.Hide();
 
         }
         private void GrouplistView_ItemClick(object sender, AdapterView.ItemClickEventArgs e)
         {
             SetContentView(Resource.Layout.dean_view_student);
+            FloatingActionButton fabAddStd = FindViewById<FloatingActionButton>(Resource.Id.fab_add_student);
+            fabAddStd.Hide();
             studentlistView = FindViewById<ListView>(Resource.Id.demolist);
             studentList = new List<Students>();
             var selectcorse = grouplist[e.Position].course;
@@ -54,8 +50,12 @@ namespace AttendanceJournal
             studentList = DataBaseHelper.GetListOfStudentsByGroupID(groupId);
             stAdapter = new StudentAdapter(this, studentList);
             studentlistView.Adapter = stAdapter;
- 
+            studentlistView.ItemClick += StudentlistView_ItemClick;
         }
-       
+        private void StudentlistView_ItemClick(object sender, AdapterView.ItemClickEventArgs e)
+        {
+            var select = studentList[e.Position].Name;
+            Toast.MakeText(this, select, ToastLength.Long).Show();
+        }
     }
 }

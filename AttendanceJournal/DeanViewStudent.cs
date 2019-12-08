@@ -24,6 +24,7 @@ namespace AttendanceJournal
         {
             base.OnCreate(bundle);
             SetContentView(Resource.Layout.dean_view_group);
+
             grouplistView = FindViewById<ListView>(Resource.Id.dean_group_viewList);
            
             grouplist = new List<Group>();
@@ -34,10 +35,6 @@ namespace AttendanceJournal
             grouplistView.Adapter = groupAdapter;
             grouplistView.ItemClick += GrouplistView_ItemClick;
             FloatingActionButton fab = FindViewById<FloatingActionButton>(Resource.Id.fab_add_group);
-            if (!fab.IsShown)
-            {
-                fab.Show();
-            }
             fab.Click += FabAddGroupOnClick;
             
         }
@@ -45,7 +42,7 @@ namespace AttendanceJournal
         private void FabAddGroupOnClick(object sender, EventArgs e)
         {
             SetContentView(Resource.Layout.dean_add_new_group);
-            Button addGroiup = FindViewById<Button>(Resource.Id.dean_addGroup_AddButton);
+            Button addGroiup = FindViewById<Button>(Resource.Id.dean_newStd_Button_Add);
             addGroiup.Click += ButtonAddGroup;
         }
         private void ButtonAddGroup(object sender, EventArgs e)
@@ -77,16 +74,50 @@ namespace AttendanceJournal
         private void GrouplistView_ItemClick(object sender, AdapterView.ItemClickEventArgs e)
         {
             SetContentView(Resource.Layout.dean_view_student);
+            FloatingActionButton fabAddStd = FindViewById<FloatingActionButton>(Resource.Id.fab_add_student);
+            fabAddStd.Click += FabAddStd_Click;
+
             studentlistView = FindViewById<ListView>(Resource.Id.demolist);
             mlist = new List<Students>();
             var selectcorse = grouplist[e.Position].course;
             var selectgroup = grouplist[e.Position].group;
             var groupId = DataBaseHelper.GetGroupIDByCorseAndNumber(selectcorse, selectgroup);
             mlist = DataBaseHelper.GetListOfStudentsByGroupID(groupId);
+            
             stAdapter = new StudentAdapter(this, mlist);
             studentlistView.Adapter = stAdapter;
-
+            studentlistView.ItemClick += StudentlistView_ItemClick;
         }
+
+        private void FabAddStd_Click(object sender, EventArgs e)
+        {
+            SetContentView(Resource.Layout.dean_add_new_studend);
+            Button addStd = FindViewById<Button>(Resource.Id.dean_newStd_Button_Add);
+            addStd.Click += AddStd_Click;
+        }
+
+        private void AddStd_Click(object sender, EventArgs e)
+        {
+            string name = FindViewById<EditText>(Resource.Id.dean_newStd_Name).Text;
+            int phone = int.Parse(FindViewById<EditText>(Resource.Id.dean_newStd_Phone).Text);
+            int group = int.Parse(FindViewById<EditText>(Resource.Id.dean_newStd_GroupNumber).Text);
+            int year = int.Parse(FindViewById<EditText>(Resource.Id.dean_newStd_StartYear).Text);
+            int groupId = DataBaseHelper.GetGroupIDByNumberAndYear(group, year);
+            Toast.MakeText(Application.Context, name + " " + phone + " " + group + " " + year, ToastLength.Long).Show();
+
+            if (DataBaseHelper.IsServerAlive())
+            {
+                DataBaseHelper.AddNewStudent(name, groupId, phone);
+                Toast.MakeText(this, "New student is added!", ToastLength.Long).Show();
+                //StartActivity(typeof(MainActivity));
+            }
+            else
+            {
+                Toast.MakeText(this, "Server isn't alive", ToastLength.Long).Show();
+            }
+            Finish();
+        }
+    
 
         private void StudentlistView_ItemClick(object sender, AdapterView.ItemClickEventArgs e)
         {
@@ -147,9 +178,9 @@ namespace AttendanceJournal
             {
                 if (row == null)
                 {
-                    row = LayoutInflater.From(sContext).Inflate(Resource.Layout.dean_view_student, null, false);
+                    row = LayoutInflater.From(sContext).Inflate(Resource.Layout.dean_content_list_group, null, false);
                 }
-                TextView txtName = row.FindViewById<TextView>(Resource.Id.Name);
+                TextView txtName = row.FindViewById<TextView>(Resource.Id.deanTextGroup);
                 txtName.Text = gList[position].course.ToString()+gList[position].group.ToString();
             }
             catch (Exception ex)
@@ -218,10 +249,10 @@ namespace AttendanceJournal
             {
                 if (row == null)
                 {
-                row = LayoutInflater.From(sContext).Inflate(Resource.Layout.dean_view_student, null, false);
+                row = LayoutInflater.From(sContext).Inflate(Resource.Layout.dean_content_list_student, null, false);
                 }
             TextView txtName = row.FindViewById<TextView>(Resource.Id.Name);
-                txtName.Text = sList[position].Name;
+                txtName.Text = sList[position].Name+" "+sList[position].Phone;
             }
             catch (Exception ex)
             {

@@ -18,14 +18,14 @@ namespace AttendanceJournal
         {
             return new MySqlConnection($"Server={Address};Port={Port};database={DBName};User Id={Id};Password={Pwd};charset=utf8");
         }
-        public static void AddNewStudent(string name, int group ,int year, int phone)
+        public static void AddNewStudent(string name, int group , int phone)
         {
             using (var con = GetNewConnection())
             {
                 con.Open();
                 MySqlCommand cmd = new MySqlCommand(
                            "INSERT INTO JournalDB.Student(NameOfStudent, GroupID, Phone, Head, UserID) " +
-                           $"VALUES('{ name }', '{group * 10000 + year}', '{phone}', '0', '3');", con);
+                           $"VALUES('{ name }', '{group}', '{phone}', '0', '3');", con);
                 cmd.ExecuteNonQuery();
                 con.Close();
             }
@@ -99,7 +99,7 @@ namespace AttendanceJournal
 
             return listRes;
         }
-        public static int GetGroupIDByCorseAndNumber(int corse, int groupNumber)
+        public static int GetGroupIDByCorseAndNumber(int course, int groupNumber)
         {
             int result = -1;
             using (var con = GetNewConnection())
@@ -108,7 +108,7 @@ namespace AttendanceJournal
                 MySqlCommand cmd = new MySqlCommand(
                            "SELECT ID " +
                            "FROM JournalDB.GroupOfStudents " +
-                           $"WHERE NumberOfGroup='{groupNumber}' AND Corse='{corse}';",
+                           $"WHERE NumberOfGroup='{groupNumber}' AND Course='{course}';",
                            con);
                 using (var reader = cmd.ExecuteReader())
                 {
