@@ -127,20 +127,7 @@ namespace AttendanceJournal
     }
    
     
-    public class Group
-    {
-     public int course
-        {
-            get;
-            set;
-        }
-        public int group
-        {
-            get;
-            set;
-        }
-
-    }
+   
     public class GroupAdapter : BaseAdapter<Group>
     {
         public List<Group> gList;
@@ -191,30 +178,7 @@ namespace AttendanceJournal
             return row;
         }
     }
-    public class Students
-    {
-        public string Name
-        {
-            get;
-            set;
-        }
-        public int Group
-        {
-            get;
-            set;
-        }
-        public int Phone
-        {
-            get;
-            set;
-        }
-        public bool Head
-        {
-            get;
-            set;
-        }
-        
-    }
+    
     public class StudentAdapter : BaseAdapter<Students>
     {
         public List<Students> sList;
@@ -252,7 +216,7 @@ namespace AttendanceJournal
                 row = LayoutInflater.From(sContext).Inflate(Resource.Layout.dean_content_list_student, null, false);
                 }
             TextView txtName = row.FindViewById<TextView>(Resource.Id.Name);
-                txtName.Text = sList[position].Name+" "+sList[position].Phone;
+                txtName.Text = sList[position].Name+"   "+sList[position].Phone;
             }
             catch (Exception ex)
             {

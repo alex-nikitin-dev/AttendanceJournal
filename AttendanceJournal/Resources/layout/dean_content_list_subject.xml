@@ -4,12 +4,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
      <TextView
-        android:id="@+id/deanTextGroup"
+        android:id="@+id/deanTextSubject"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="25dp" />
         <ListView
-            android:id="@+id/dean_group_viewList"
+            android:id="@+id/dean_subject_viewList"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
         </ListView>

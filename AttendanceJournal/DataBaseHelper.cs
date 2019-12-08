@@ -30,6 +30,98 @@ namespace AttendanceJournal
                 con.Close();
             }
         }
+        public static int GetSubjectIDByName(string name)
+        {
+            int res = -1;
+            using (var con = GetNewConnection())
+            {
+                con.Open();
+                MySqlCommand cmd = new MySqlCommand(
+                           "SELECT ID " +
+                           "FROM JournalDB.Subject " +
+                           $"WHERE NameOfSubject='{name}';",
+                           con);
+                using (var reader = cmd.ExecuteReader())
+                {
+
+                    for (int i = 0; reader.Read(); i++)
+                    {
+                        if (i > 0)
+                        {
+                            throw new Exception("database error: Subject is not unique");
+                        }
+                        res = (int)reader.GetValue(0);
+                    }
+                }
+                con.Close();
+            }
+            return res;
+        }
+        public static string GetNameOfSubgectByID(int Id)
+        {
+            string res=null;
+            using (var con = GetNewConnection())
+            {
+                con.Open();
+                MySqlCommand cmd = new MySqlCommand(
+                           "SELECT NameOfSubject " +
+                           "FROM JournalDB.Subject " +
+                           $"WHERE ID='{Id}';",
+                           con);
+                using (var reader = cmd.ExecuteReader())
+                {
+
+                    for (int i = 0; reader.Read(); i++)
+                    {
+                        if (i > 0)
+                        {
+                            throw new Exception("database error: Subject is not unique");
+                        }
+                        res = (string)reader.GetValue(0);
+                    }
+                }
+                con.Close();
+            }
+            return res;
+        }
+        public static List<Subject> GetListOfSubject()
+        {
+            List < Subject > res = new List<Subject>();
+            using (var con = GetNewConnection())
+            {
+                con.Open();
+                MySqlCommand cmd = new MySqlCommand(
+                           "SELECT NameOfSubject " +
+                           "FROM JournalDB.Subject ",
+                           con);
+                using (var reader = cmd.ExecuteReader())
+                {
+
+                    for (int i = 0; reader.Read(); i++)
+                    {
+                        res.Add(new Subject
+                        {
+                            nameofSubject = (string)reader.GetString(reader.GetOrdinal("NameOfSubject"))          
+                        });
+                    }
+                }
+                con.Close();
+            }
+            return res;
+        }
+        public static void AddNewSubgect(string name)
+        {
+            using (var con = GetNewConnection())
+            {
+                con.Open();
+                MySqlCommand cmd = new MySqlCommand(
+                           "INSERT INTO JournalDB.Subject(NameOfSubject) " +
+                           $"VALUES('{ name }');", con);
+                cmd.ExecuteNonQuery();
+                con.Close();
+            }
+
+        }
         public static void AddNewGroup( int course, int groupNumber, int year)
         {
             using (var con = GetNewConnection())
