@@ -1,0 +1,19 @@
+<RelativeLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+ 
+    <include layout="@layout/dean_content_list_professor"/>
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_add_professor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="15dp"
+        android:layout_marginBottom="15dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:src="@android:drawable/ic_input_add"
+        app:backgroundTint="@android:color/holo_red_light"/>
+</RelativeLayout>

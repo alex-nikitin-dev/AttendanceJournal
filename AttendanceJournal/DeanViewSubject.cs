@@ -20,15 +20,15 @@ namespace AttendanceJournal
         private List<Subject> subgectList;
         SubjectAdapter subjectAdapter;
         protected override void OnCreate(Bundle savedInstanceState)
-        {
+        { 
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.dean_view_subject);
-            subjectlistView = FindViewById<ListView>(Resource.Id.dean_group_viewList);
+            subjectlistView = FindViewById<ListView>(Resource.Id.dean_subject_viewList);
             subgectList = new List<Subject>();
             subgectList = DataBaseHelper.GetListOfSubject();
             subjectAdapter = new SubjectAdapter(this, subgectList);
             subjectlistView.Adapter = subjectAdapter;
-            subjectlistView.ItemClick += SubjectlistView_ItemClick;
+           // subjectlistView.ItemClick += SubjectlistView_ItemClick;
             FloatingActionButton fab = FindViewById<FloatingActionButton>(Resource.Id.fab_add_subject);
             fab.Click += Fab_AddNewSubject;
         }
@@ -53,11 +53,6 @@ namespace AttendanceJournal
                 Toast.MakeText(this, "Server isn't alive", ToastLength.Long).Show();
             }
             Finish();
-        }
-
-        private void SubjectlistView_ItemClick(object sender, AdapterView.ItemClickEventArgs e)
-        {
-            throw new NotImplementedException();
         }
     }
     public class SubjectAdapter : BaseAdapter<Subject>
@@ -99,7 +94,7 @@ namespace AttendanceJournal
                 {
                     row = LayoutInflater.From(sContext).Inflate(Resource.Layout.dean_content_list_subject, null, false);
                 }
-                TextView txtName = row.FindViewById<TextView>(Resource.Id.deanTextGroup);
+                TextView txtName = row.FindViewById<TextView>(Resource.Id.deanTextSubject);
                 txtName.Text = gList[position].nameofSubject.ToString();
             }
             catch (Exception ex)
