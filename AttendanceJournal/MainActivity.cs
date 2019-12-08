@@ -82,21 +82,24 @@ namespace AttendanceJournal
 
             if (id == Resource.Id.nav_dean_students)
             {
-                Intent intent = new Intent(this,typeof(AddNewStudent));
+                Intent intent = new Intent(this, typeof(DeanViewStudent));
                 StartActivity(intent);
             }
             else if (id == Resource.Id.nav_dean_journal)
             {
-                Intent intent = new Intent(this, typeof(DeanViewStudent));
+                Intent intent = new Intent(this, typeof(DeanViewJournal));
                 StartActivity(intent);
             }
             else if (id == Resource.Id.nav_dean_subjects)
             {
+                Intent intent = new Intent(this, typeof(DeanViewSubject));
+                StartActivity(intent);
 
             }
             else if (id == Resource.Id.nav_dean_professors)
             {
-
+                Intent intent = new Intent(this, typeof(DeanViewProfessor));
+                StartActivity(intent);
             }
             else if (id == Resource.Id.nav_gLeader_students)
             {
@@ -116,17 +119,7 @@ namespace AttendanceJournal
             }
             else if (id == Resource.Id.nav_gLeader_week)
             {
-                //There is menu for Group Leader 
-
-
-                //if (SwitchVisibility() == false)
-                //{
-                //    item.SetTitle("Show What you've just hid");
-                //}
-                //else
-                //{
-                //    item.SetTitle("Hide it, now!");
-                //}
+                //There is menu for Group 
             }
             else if (id == Resource.Id.nav_gLeader_semestr)
             {
@@ -155,3 +148,11 @@ namespace AttendanceJournal
     }
 }
 
+//if (SwitchVisibility() == false)
+//{
+//    item.SetTitle("Show What you've just hid");
+//}
+//else
+//{
+//    item.SetTitle("Hide it, now!");
+//}

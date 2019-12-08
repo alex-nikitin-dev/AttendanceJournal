@@ -62,10 +62,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AddNewStudent.cs" />
+    <Compile Include="DeanViewProfessor.cs" />
     <Compile Include="DeanViewStudent.cs" />
     <Compile Include="DataBaseHelper.cs" />
+    <Compile Include="DeanViewJournal.cs" />
+    <Compile Include="DeanViewSubject.cs" />
     <Compile Include="LoginActivity.cs" />
     <Compile Include="MainActivity.cs" />
+    <Compile Include="Objects.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -285,6 +289,31 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\dean_add_new_group.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\dean_content_list_group.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\dean_content_list_student.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\dean_view_subject.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\dean_content_list_subject.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\dean_add_subject.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>

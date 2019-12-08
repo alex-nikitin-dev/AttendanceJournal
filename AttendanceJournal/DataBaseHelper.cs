@@ -18,17 +18,109 @@ namespace AttendanceJournal
         {
             return new MySqlConnection($"Server={Address};Port={Port};database={DBName};User Id={Id};Password={Pwd};charset=utf8");
         }
-        public static void AddNewStudent(string name, int group ,int year, int phone)
+        public static void AddNewStudent(string name, int group , int phone)
         {
             using (var con = GetNewConnection())
             {
                 con.Open();
                 MySqlCommand cmd = new MySqlCommand(
                            "INSERT INTO JournalDB.Student(NameOfStudent, GroupID, Phone, Head, UserID) " +
-                           $"VALUES('{ name }', '{group * 10000 + year}', '{phone}', '0', '3');", con);
+                           $"VALUES('{ name }', '{group}', '{phone}', '0', '3');", con);
                 cmd.ExecuteNonQuery();
                 con.Close();
             }
+        }
+        public static int GetSubjectIDByName(string name)
+        {
+            int res = -1;
+            using (var con = GetNewConnection())
+            {
+                con.Open();
+                MySqlCommand cmd = new MySqlCommand(
+                           "SELECT ID " +
+                           "FROM JournalDB.Subject " +
+                           $"WHERE NameOfSubject='{name}';",
+                           con);
+                using (var reader = cmd.ExecuteReader())
+                {
+
+                    for (int i = 0; reader.Read(); i++)
+                    {
+                        if (i > 0)
+                        {
+                            throw new Exception("database error: Subject is not unique");
+                        }
+                        res = (int)reader.GetValue(0);
+                    }
+                }
+                con.Close();
+            }
+            return res;
+        }
+        public static string GetNameOfSubgectByID(int Id)
+        {
+            string res=null;
+            using (var con = GetNewConnection())
+            {
+                con.Open();
+                MySqlCommand cmd = new MySqlCommand(
+                           "SELECT NameOfSubject " +
+                           "FROM JournalDB.Subject " +
+                           $"WHERE ID='{Id}';",
+                           con);
+                using (var reader = cmd.ExecuteReader())
+                {
+
+                    for (int i = 0; reader.Read(); i++)
+                    {
+                        if (i > 0)
+                        {
+                            throw new Exception("database error: Subject is not unique");
+                        }
+                        res = (string)reader.GetValue(0);
+                    }
+                }
+                con.Close();
+            }
+            return res;
+        }
+        public static List<Subject> GetListOfSubject()
+        {
+            List < Subject > res = new List<Subject>();
+            using (var con = GetNewConnection())
+            {
+                con.Open();
+                MySqlCommand cmd = new MySqlCommand(
+                           "SELECT NameOfSubject " +
+                           "FROM JournalDB.Subject ",
+                           con);
+                using (var reader = cmd.ExecuteReader())
+                {
+
+                    for (int i = 0; reader.Read(); i++)
+                    {
+                        res.Add(new Subject
+                        {
+                            nameofSubject = (string)reader.GetString(reader.GetOrdinal("NameOfSubject"))          
+                        });
+                    }
+                }
+                con.Close();
+            }
+            return res;
+        }
+        public static void AddNewSubgect(string name)
+        {
+            using (var con = GetNewConnection())
+            {
+                con.Open();
+                MySqlCommand cmd = new MySqlCommand(
+                           "INSERT INTO JournalDB.Subject(NameOfSubject) " +
+                           $"VALUES('{ name }');", con);
+                cmd.ExecuteNonQuery();
+                con.Close();
+            }
+
         }
         public static void AddNewGroup( int course, int groupNumber, int year)
         {
@@ -68,7 +160,67 @@ namespace AttendanceJournal
             }
             return listRes;
         }
-        public static int GetGroupID(int group, int year )
+        public static List<Students> GetListOfStudentsByGroupID(int groupID)
+        {
+            List<Students> listRes = new List<Students>();
+            using (var con = GetNewConnection())
+            {
+                con.Open();
+                MySqlCommand cmd = new MySqlCommand(
+                           "SELECT NameOfStudent, GroupID, Phone, Head " +
+                           "FROM JournalDB.Student "+
+                           $"WHERE GroupID='{groupID}'",
+                           con);
+                using (var reader = cmd.ExecuteReader())
+                {
+
+                    for (int i = 0; reader.Read(); i++)
+                    {
+                        listRes.Add(new Students
+                        {
+                            Name = reader.GetString(reader.GetOrdinal("NameOfStudent")),
+                            Group = reader.GetInt32(reader.GetOrdinal("GroupID")),
+                            Phone = reader.GetInt32(reader.GetOrdinal("Phone")),
+                            Head = reader.GetBoolean(reader.GetOrdinal("Head"))
+
+                        });
+                    }
+                }
+                con.Close();
+            }
+
+            return listRes;
+        }
+        public static int GetGroupIDByCorseAndNumber(int course, int groupNumber)
+        {
+            int result = -1;
+            using (var con = GetNewConnection())
+            {
+                con.Open();
+                MySqlCommand cmd = new MySqlCommand(
+                           "SELECT ID " +
+                           "FROM JournalDB.GroupOfStudents " +
+                           $"WHERE NumberOfGroup='{groupNumber}' AND Course='{course}';",
+                           con);
+                using (var reader = cmd.ExecuteReader())
+                {
+
+                    for (int i = 0; reader.Read(); i++)
+                    {
+                        if (i > 0)
+                        {
+                            throw new Exception("database error: group is not unique");
+                        }
+                        result = (int)reader.GetValue(0);
+                    }
+                }
+                con.Close();
+            }
+
+            return result;
+
+        }
+        public static int GetGroupIDByNumberAndYear(int group, int year )
         {
             int result = -1;
             using (var con = GetNewConnection())
