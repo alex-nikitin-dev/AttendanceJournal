@@ -19,6 +19,8 @@ namespace AttendanceJournal
     [Activity(Label = "@string/app_name", Theme = "@style/AppTheme.NoActionBar")]
     public class MainActivity : AppCompatActivity, NavigationView.IOnNavigationItemSelectedListener
     {
+
+        private DrawerLayout drawer;
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -30,7 +32,7 @@ namespace AttendanceJournal
             FloatingActionButton fab = FindViewById<FloatingActionButton>(Resource.Id.fab);
             fab.Click += FabOnClick;
 
-            DrawerLayout drawer = FindViewById<DrawerLayout>(Resource.Id.drawer_layout);
+            drawer = FindViewById<DrawerLayout>(Resource.Id.drawer_layout);
             ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, Resource.String.navigation_drawer_open, Resource.String.navigation_drawer_close);
             drawer.AddDrawerListener(toggle);
             toggle.SyncState();
@@ -100,15 +102,21 @@ namespace AttendanceJournal
             }
             else if (id == Resource.Id.nav_gLeader_students)
             {
-                //There is menu for Group Leader 
+                SupportFragmentManager.BeginTransaction()
+                              .Replace(Resource.Id.content_frame, new LeaderStudentsFragment())
+                              .Commit();
             }
             else if (id == Resource.Id.nav_gLeader_subjects)
             {
-                //There is menu for Group Leader 
+                SupportFragmentManager.BeginTransaction()
+                              .Replace(Resource.Id.content_frame, new LeaderSubjectsFragment())
+                              .Commit();
             }
             else if (id == Resource.Id.nav_gLeader_professors)
             {
-                //There is menu for Group Leader 
+                SupportFragmentManager.BeginTransaction()
+                              .Replace(Resource.Id.content_frame, new LeaderProfessorsFragment())
+                              .Commit();
             }
             else if (id == Resource.Id.nav_gLeader_day)
             {

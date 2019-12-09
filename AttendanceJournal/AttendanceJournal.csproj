@@ -64,6 +64,9 @@
     <Compile Include="AddNewStudent.cs" />
     <Compile Include="DeanViewStudent.cs" />
     <Compile Include="DataBaseHelper.cs" />
+    <Compile Include="LeaderProfessorsFragment.cs" />
+    <Compile Include="LeaderStudentsFragment.cs" />
+    <Compile Include="LeaderSubjectsFragment.cs" />
     <Compile Include="LoginActivity.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
@@ -285,6 +288,36 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\dean_add_new_group.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\leader_list_item_students.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\leader_fragment_students.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\leader_fragment_subjects.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\leader_fragment_professors.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\leader_list_item_subjects.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\leader_list_item_professors.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>

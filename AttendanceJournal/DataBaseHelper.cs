@@ -59,9 +59,90 @@ namespace AttendanceJournal
 
                     for (int i = 0; reader.Read(); i++)
                     {
-                        listRes.Add(new Group { 
+                        listRes.Add(new Group
+                        {
                             course = (int)reader.GetUInt32(reader.GetOrdinal("Course")),
-                            group = (int)reader.GetInt32(reader.GetOrdinal("NumberOfGroup"))}) ;   
+                            group = (int)reader.GetInt32(reader.GetOrdinal("NumberOfGroup"))
+                        });
+                    }
+                }
+                con.Close();
+            }
+            return listRes;
+        }
+        public static List<String> GetListOfSubjects()
+        {
+            List<String> listRes = new List<String>();
+            using (var con = GetNewConnection())
+            {
+                con.Open();
+                MySqlCommand cmd = new MySqlCommand(
+                           "SELECT NameOfSubject " +
+                           "FROM JournalDB.Subject",
+                           con);
+                using (var reader = cmd.ExecuteReader())
+                {
+
+                    for (int i = 0; reader.Read(); i++)
+                    {
+                        listRes.Add((String)reader.GetString(reader.GetOrdinal("NameOfSubject")));
+                    }
+                }
+                con.Close();
+            }
+            return listRes;
+        }
+        public static List<Professor> GetListOfProfessors()
+        {
+            List<Professor> listRes = new List<Professor>();
+            using (var con = GetNewConnection())
+            {
+                con.Open();
+                MySqlCommand cmd = new MySqlCommand(
+                           "SELECT * " +
+                           "FROM JournalDB.Professor",
+                           con);
+                using (var reader = cmd.ExecuteReader())
+                {
+
+                    for (int i = 0; reader.Read(); i++)
+                    {
+                        listRes.Add(new Professor
+                        {
+                            id = (int)reader.GetUInt32(reader.GetOrdinal("ID")),
+                            name = (String)reader.GetString(reader.GetOrdinal("NameOfProfessor")),
+                            room = (int)reader.GetInt32(reader.GetOrdinal("Room")),
+                            phone = (int)reader.GetInt32(reader.GetOrdinal("Phone"))
+                        });
+                    }
+                }
+                con.Close();
+            }
+            return listRes;
+        }
+        public static List<Student> GetListOfStudents(int groupId)
+        {
+            List<Student> listRes = new List<Student>();
+            using (var con = GetNewConnection())
+            {
+                con.Open();
+                MySqlCommand cmd = new MySqlCommand(
+                           "SELECT * " +
+                           "FROM JournalDB.Student " + 
+                           "WHERE GroupID = " + groupId,
+                           con);
+                using (var reader = cmd.ExecuteReader())
+                {
+
+                    for (int i = 0; reader.Read(); i++)
+                    {
+                        listRes.Add(new Student
+                        {
+                            id = (int)reader.GetUInt32(reader.GetOrdinal("ID")),
+                            name = (String)reader.GetString(reader.GetOrdinal("NameOfStudent")),
+                            groupId = (int)reader.GetInt32(reader.GetOrdinal("GroupID")),
+                            phone = (int)reader.GetInt32(reader.GetOrdinal("Phone"))
+                        });
                     }
                 }
                 con.Close();
