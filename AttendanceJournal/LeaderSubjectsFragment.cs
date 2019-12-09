@@ -37,7 +37,6 @@ namespace AttendanceJournal
             //subjectNameList.Add("Математика");
 
             ArrayAdapter<String> adapter = new ArrayAdapter<String>(root.Context, Resource.Layout.leader_list_item_subjects, subjectNameList);
-
             lvSubjects.Adapter = adapter;
 
             return root;

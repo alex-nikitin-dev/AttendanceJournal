@@ -151,9 +151,11 @@ namespace AttendanceJournal
 
                     for (int i = 0; reader.Read(); i++)
                     {
-                        listRes.Add(new Group {
+                        listRes.Add(new Group
+                        {
                             course = (int)reader.GetUInt32(reader.GetOrdinal("Course")),
-                            group = (int)reader.GetInt32(reader.GetOrdinal("NumberOfGroup")) });
+                            group = (int)reader.GetInt32(reader.GetOrdinal("NumberOfGroup"))
+                        });
                     }
                 }
                 con.Close();
@@ -249,15 +251,15 @@ namespace AttendanceJournal
             return result;
 
         }
-    public static List<Professor> GetListOfProfessors()
+        public static List<Professor> GetListOfProfessors()
         {
-            List < Professor > res = new List<Professor>();
+            List<Professor> res = new List<Professor>();
             using (var con = GetNewConnection())
             {
                 con.Open();
                 MySqlCommand cmd = new MySqlCommand(
                            "SELECT NameOfProfessor, Phone, Room " +
-                           "FROM JournalDB.Professor; ",con);
+                           "FROM JournalDB.Professor; ", con);
                 using (var reader = cmd.ExecuteReader())
                 {
 
@@ -288,7 +290,7 @@ namespace AttendanceJournal
                 con.Close();
             }
         }
-    public static string GetUserPwdHash(string login)
+        public static string GetUserPwdHash(string login)
         {
             string result = string.Empty;
             using (var con = GetNewConnection())
@@ -301,10 +303,10 @@ namespace AttendanceJournal
                            con);
                 using (var reader = cmd.ExecuteReader())
                 {
-                    
+
                     for (int i = 0; reader.Read(); i++)
                     {
-                        if(i > 0)
+                        if (i > 0)
                         {
                             throw new Exception("database error: login is not unique");
                         }

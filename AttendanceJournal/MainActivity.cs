@@ -19,6 +19,8 @@ namespace AttendanceJournal
     [Activity(Label = "@string/app_name", Theme = "@style/AppTheme.NoActionBar")]
     public class MainActivity : AppCompatActivity, NavigationView.IOnNavigationItemSelectedListener
     {
+
+        private DrawerLayout drawer;
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -30,7 +32,7 @@ namespace AttendanceJournal
             FloatingActionButton fab = FindViewById<FloatingActionButton>(Resource.Id.fab);
             fab.Click += FabOnClick;
 
-            DrawerLayout drawer = FindViewById<DrawerLayout>(Resource.Id.drawer_layout);
+            drawer = FindViewById<DrawerLayout>(Resource.Id.drawer_layout);
             ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, Resource.String.navigation_drawer_open, Resource.String.navigation_drawer_close);
             drawer.AddDrawerListener(toggle);
             toggle.SyncState();

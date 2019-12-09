@@ -80,9 +80,9 @@ namespace AttendanceJournal
                 TextView tvName = view.FindViewById<TextView>(Resource.Id.tv_leader_professors_name);
                 tvName.Text = professors[position].nameOfProfessor;
                 TextView tvPhone = view.FindViewById<TextView>(Resource.Id.tv_leader_professors_phone_number);
-                tvPhone.Text = professors[position].phone.ToString();
+                tvPhone.Text = "phone: " + professors[position].phone.ToString();
                 TextView tvRoom = view.FindViewById<TextView>(Resource.Id.tv_leader_professors_room);
-                tvRoom.Text = "ауд. " + professors[position].room.ToString();
+                tvRoom.Text = "room: " + professors[position].room.ToString();
             }
             catch (Exception ex)
             {
