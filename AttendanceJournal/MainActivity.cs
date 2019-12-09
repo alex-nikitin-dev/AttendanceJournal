@@ -103,15 +103,21 @@ namespace AttendanceJournal
             }
             else if (id == Resource.Id.nav_gLeader_students)
             {
-                //There is menu for Group Leader 
+                SupportFragmentManager.BeginTransaction()
+                              .Replace(Resource.Id.content_frame, new LeaderStudentsFragment())
+                              .Commit();
             }
             else if (id == Resource.Id.nav_gLeader_subjects)
             {
-                //There is menu for Group Leader 
+                SupportFragmentManager.BeginTransaction()
+                              .Replace(Resource.Id.content_frame, new LeaderSubjectsFragment())
+                              .Commit();
             }
             else if (id == Resource.Id.nav_gLeader_professors)
             {
-                //There is menu for Group Leader 
+                SupportFragmentManager.BeginTransaction()
+                              .Replace(Resource.Id.content_frame, new LeaderProfessorsFragment())
+                              .Commit();
             }
             else if (id == Resource.Id.nav_gLeader_day)
             {
