@@ -19,9 +19,7 @@ namespace AttendanceJournal
         private ListView professorListView;
         private List<Professor> professorList;
         ProfessorAdaptor professorAdaptor;
-        //private ListView studentlistView;
-        //private List<Students> mlist;
-        //StudentAdapter stAdapter;
+ 
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -98,7 +96,7 @@ namespace AttendanceJournal
                     row = LayoutInflater.From(sContext).Inflate(Resource.Layout.dean_content_list_professor, null, false);
                 }
                 TextView txtName = row.FindViewById<TextView>(Resource.Id.deanTextProfessor);
-                txtName.Text = gList[position].nameOfProfessor.ToString() +"\n room "+ gList[position].room.ToString()+"\n phone 0"+ gList[position].phone.ToString();
+                txtName.Text = gList[position].nameOfProfessor.ToString() +"\n room: "+ gList[position].room.ToString()+"\n phone: 0"+ gList[position].phone.ToString();
             }
             catch (Exception ex)
             {

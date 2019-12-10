@@ -167,7 +167,7 @@ namespace AttendanceJournal
             {
                 con.Open();
                 MySqlCommand cmd = new MySqlCommand(
-                           "SELECT NameOfStudent, GroupID, Phone, Head " +
+                           "SELECT ID, NameOfStudent, GroupID, Phone, Head " +
                            "FROM JournalDB.Student " +
                            $"WHERE GroupID='{groupID}'",
                            con);
@@ -178,18 +178,59 @@ namespace AttendanceJournal
                     {
                         listRes.Add(new Students
                         {
+                            ID = reader.GetInt32(reader.GetOrdinal("ID")),
                             Name = reader.GetString(reader.GetOrdinal("NameOfStudent")),
                             Group = reader.GetInt32(reader.GetOrdinal("GroupID")),
                             Phone = reader.GetInt32(reader.GetOrdinal("Phone")),
                             Head = reader.GetBoolean(reader.GetOrdinal("Head"))
 
-                        });
+                        }); ;
                     }
                 }
                 con.Close();
             }
 
             return listRes;
+        }
+        public static List<Mark> GetListOfCountMarksByStudentID(List<Students> students)
+        {
+            List<Mark> res = new List<Mark>();
+            for (int i = 0; i < students.Count; i++)
+            {
+                using (var con = GetNewConnection())
+                {
+                    con.Open();
+                    MySqlCommand cmd = new MySqlCommand(
+                               "SELECT COUNT(Mark)" +
+                               "FROM JournalDB.Journal " +
+                               $"WHERE Mark='0' AND StudentID='{students[i].ID}'",
+                               con);
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        reader.Read();
+                        res.Add(new Mark
+                            {
+                                mark = reader.GetInt32(0)
+
+                            });
+                        //if(reader.GetInt32(0)>0)
+                        //{
+                        //    res.Add(new Mark
+                        //    {
+                        //        mark = reader.GetInt32(0)
+
+                        //    });
+                        //}
+                        //else
+                        //{
+                        //    res.Add(new Mark { mark = 0 });
+                        //}
+                    }
+                    con.Close();
+                }
+            }
+            return res;
+
         }
         public static int GetGroupIDByCorseAndNumber(int course, int groupNumber)
         {
