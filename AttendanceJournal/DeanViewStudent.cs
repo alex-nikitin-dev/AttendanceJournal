@@ -109,7 +109,6 @@ namespace AttendanceJournal
             {
                 DataBaseHelper.AddNewStudent(name, groupId, phone);
                 Toast.MakeText(this, "New student is added!", ToastLength.Long).Show();
-                //StartActivity(typeof(MainActivity));
             }
             else
             {
@@ -216,7 +215,7 @@ namespace AttendanceJournal
                 row = LayoutInflater.From(sContext).Inflate(Resource.Layout.dean_content_list_student, null, false);
                 }
             TextView txtName = row.FindViewById<TextView>(Resource.Id.Name);
-                txtName.Text = sList[position].Name+"   "+sList[position].Phone;
+                txtName.Text = "Name: "+sList[position].Name+"\nPhone: "+sList[position].Phone;
             }
             catch (Exception ex)
             {

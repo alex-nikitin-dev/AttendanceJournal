@@ -15,6 +15,11 @@ namespace AttendanceJournal
     
     public class Students
     {
+        public int ID
+        {
+            get;
+            set;
+        }
         public string Name
         {
             get;
@@ -73,6 +78,14 @@ namespace AttendanceJournal
             set;
         }
         public int room
+        {
+            get;
+            set;
+        }
+    }
+    public class Mark
+    {
+        public int mark
         {
             get;
             set;
