@@ -131,7 +131,7 @@ namespace AttendanceJournal
             get;
             set;
         }
-        public bool Mark
+        public int Mark
         {
           get;
           set;

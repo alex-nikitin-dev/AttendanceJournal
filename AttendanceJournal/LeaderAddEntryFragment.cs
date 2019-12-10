@@ -129,7 +129,7 @@ namespace AttendanceJournal
         }
         void OnDateSet(object sender, DatePickerDialog.DateSetEventArgs e)
         {
-            tvDate.Text = e.Date.ToLongDateString();
+            tvDate.Text = e.Date.ToString("dd.MM.yyyy");
         }
         public override void OnCreateOptionsMenu(IMenu menu, MenuInflater inflater)
         {
@@ -164,8 +164,8 @@ namespace AttendanceJournal
                 entry.Professor = professors.ElementAt(spProfessor.SelectedItemPosition);
                 entry.Subject = subjects.ElementAt(spSubject.SelectedItemPosition);
                 if (sbArray.Get(i))
-                    entry.Mark = true;
-                //DataBaseHelper.AddNewEntry(entry);
+                    entry.Mark = 1;
+                DataBaseHelper.AddNewEntry(entry);
                 i++;
                 System.Diagnostics.Debug.WriteLine(entry.Student.Name + " " + entry.Mark);
             }

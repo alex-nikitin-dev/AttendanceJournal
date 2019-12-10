@@ -29,8 +29,6 @@ namespace AttendanceJournal
             //Trigger click event of Login Button  
             var button = FindViewById<Android.Support.Design.Widget.FloatingActionButton>(Resource.Id.btnLogin);
             button.Click += DoLogin;
-
-            StartActivity(typeof(MainActivity));
         }
 
         public void DoLogin(object sender, EventArgs e)

@@ -20,10 +20,12 @@ namespace AttendanceJournal
         private Students user;
         private Button btnLeft;
         private Button btnRight;
+        private TextView tvDate;
         private ListView lvEntry;
         private List<Entry> entries;
         private LeaderEntryAdapter adapter;
         private DateTime date;
+        private Context context;
 
         private int userGroupID;
         public override void OnCreate(Bundle savedInstanceState)
@@ -38,6 +40,19 @@ namespace AttendanceJournal
             lvEntry = root.FindViewById<ListView>(Resource.Id.lv_leader_day_entry);
             btnLeft = root.FindViewById<Button>(Resource.Id.btn_leader_day_left);
             btnRight = root.FindViewById<Button>(Resource.Id.btn_leader_day_right);
+            tvDate = root.FindViewById<TextView>(Resource.Id.tv_leader_day);
+            context = root.Context;
+
+            btnLeft.Click += delegate {
+                date = date.AddDays(-1);
+                tvDate.Text = date.ToString("dd.MM.yyyy");
+                updateListView();
+            };
+            btnRight.Click += delegate {
+                date = date.AddDays(1);
+                tvDate.Text = date.ToString("dd.MM.yyyy");
+                updateListView();
+            };
 
             if (Arguments != null && Arguments.ContainsKey("UserID"))
             {
@@ -61,7 +76,27 @@ namespace AttendanceJournal
             FloatingActionButton fab = root.FindViewById<FloatingActionButton>(Resource.Id.fab_leader_add_entry);
             fab.Click += FabOnClick;
 
+            tvDate.Text = date.ToString("dd.MM.yyyy");
+            tvDate.Click += (sender, e) => {
+                DatePickerDialog dialog = new DatePickerDialog(root.Context, OnDateSet, date.Year, date.Month - 1, date.Day);
+                dialog.Show();
+            };
+
             return root;
+        }
+        void OnDateSet(object sender, DatePickerDialog.DateSetEventArgs e)
+        {
+            tvDate.Text = e.Date.ToString("dd.MM.yyyy");
+            date = e.Date;
+            updateListView();
+        }
+        private void updateListView()
+        {
+            List<Entry> etmp = DataBaseHelper.GetListOfDayEntriesByGroupIDAndDate(userGroupID, date);
+            entries.Clear();
+            foreach(Entry e in etmp)
+                entries.Add(e);
+            adapter.NotifyDataSetChanged();
         }
         private void FabOnClick(object sender, EventArgs eventArgs)
         {
@@ -80,6 +115,7 @@ namespace AttendanceJournal
             {
                 Bundle bundle = new Bundle();
                 bundle.PutInt("UserID", UserID);
+                bundle.PutString("Date", date.ToString("dd.MM.yyyy"));
                 Android.Support.V4.App.Fragment fragment = new LeaderDayDetailsFragment();
                 FragmentManager.BeginTransaction()
                               .Replace(Resource.Id.content_frame, fragment)
@@ -138,8 +174,7 @@ namespace AttendanceJournal
                 TextView tvName = view.FindViewById<TextView>(Resource.Id.tv_leader_entry_name);
                 tvName.Text = entries[position].Student.Name;
                 TextView tvPasses = view.FindViewById<TextView>(Resource.Id.tv_leader_entry_passes);
-                //tvPasses.Text = entries[position].Passes.ToString();
-                System.Diagnostics.Debug.WriteLine(entries[position].Student.Name + " " + entries[position].Mark);
+                tvPasses.Text = entries[position].Mark.ToString();
             }
             catch (Exception ex)
             {

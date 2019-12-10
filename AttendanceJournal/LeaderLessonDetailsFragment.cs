@@ -55,7 +55,7 @@ namespace AttendanceJournal
             userGroupID = 0;
             date = DateTime.Now;
             entries = DataBaseHelper.GetListOfDayDelailEntriesByGroupIDAndDate(userGroupID, date);
-            entries.Add(new Entry { EntryDate = date, NumberOfLesson = 2, Room = 500, Professor = new Professor { nameOfProfessor = "professor1" }, Subject = new Subject { nameofSubject = "subj" }, Student=new Students { Name="stud" } , Mark=false});
+            entries.Add(new Entry { EntryDate = date, NumberOfLesson = 2, Room = 500, Professor = new Professor { nameOfProfessor = "professor1" }, Subject = new Subject { nameofSubject = "subj" }, Student=new Students { Name="stud" } , Mark=0});
 
 
             students = new List<Students>();

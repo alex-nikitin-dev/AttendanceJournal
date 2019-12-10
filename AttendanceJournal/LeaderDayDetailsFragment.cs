@@ -32,18 +32,26 @@ namespace AttendanceJournal
             View root = inflater.Inflate(Resource.Layout.leader_fragment_day_details, container, false);
             lvEntry = root.FindViewById<ListView>(Resource.Id.lv_leader_day_details);
 
-            if (Arguments != null && Arguments.ContainsKey("UserID"))
+            if (Arguments != null)
             {
-                UserID = Arguments.GetInt("UserID");
-                user = DataBaseHelper.GetStudentByUserID(UserID);
+                if (Arguments.ContainsKey("UserID"))
+                {
+                    UserID = Arguments.GetInt("UserID");
+                    user = DataBaseHelper.GetStudentByUserID(UserID);
+                }
+                if (Arguments.ContainsKey("Date"))
+                {
+                    date = DateTime.Parse(Arguments.GetString("Date"));
+                }
             }
+            //todo change to user group id
+            userGroupID = 2;
+
+            date = DateTime.Today;
 
             entries = new List<Entry>();
-            //todo change to user group id
-            userGroupID = 0;
-            date = DateTime.Now;
-            //entries = DataBaseHelper.GetListOfDayDelailEntriesByGroupIDAndDate(userGroupID, date);
-            entries.Add(new Entry { EntryDate = date, NumberOfLesson = 2, Room = 500, Professor = new Professor {nameOfProfessor="professor1" }, Subject = new Subject {nameofSubject="subj" } });
+            entries = DataBaseHelper.GetListOfDayDelailEntriesByGroupIDAndDate(userGroupID, date);
+            //entries.Add(new Entry { EntryDate = date, NumberOfLesson = 2, Room = 500, Professor = new Professor {nameOfProfessor="professor1" }, Subject = new Subject {nameofSubject="subj" } });
             
 
             adapter = new LeaderEntryDetailsAdapter(root.Context, entries);

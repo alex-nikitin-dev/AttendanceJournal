@@ -486,6 +486,31 @@ namespace AttendanceJournal
                 con.Close();
             }
         }
+
+        public static int GetMarksByIDAndDate(int id, DateTime dateFrom, DateTime dateTo)
+        {
+            int res = 0;
+            using (var con = GetNewConnection())
+            {
+                con.Open();
+                MySqlCommand cmd = new MySqlCommand(
+                           "SELECT Count(Mark) as cnt " +
+                           "FROM JournalDB.Journal " +
+                           "WHERE StudentID = " + id + " " +
+                           "AND Mark = '1' " +
+                           "AND EntryDate BETWEEN '" + dateFrom.ToString("dd.MM.yyyy") + "' AND '" + dateTo.ToString("dd.MM.yyyy") + "' ",
+                           con);
+                using (var reader = cmd.ExecuteReader())
+                {
+                    for (int i = 0; reader.Read(); i++)
+                    {
+                        res = reader.GetInt32(reader.GetOrdinal("cnt"));
+                    }
+                }
+                con.Close();
+            }
+            return res;
+        }
         public static List<Entry> GetListOfDayEntriesByGroupIDAndDate(int id, DateTime date)
         {
             List<Entry> res = new List<Entry>();
@@ -493,10 +518,13 @@ namespace AttendanceJournal
             {
                 con.Open();
                 MySqlCommand cmd = new MySqlCommand(
-                           "SELECT * " +
+                           "SELECT StudentID, COUNT(Mark) as cnt " +
                            "FROM JournalDB.Journal INNER JOIN JournalDB.Student " +
                            "ON JournalDB.Journal.StudentID = JournalDB.Student.ID " +
-                           "AND JournalDB.Student.GroupID = " + id,
+                           "AND JournalDB.Student.GroupID = " + id + " " +
+                           "AND Mark = '" + 1 + "' " +
+                           "AND JournalDB.Journal.EntryDate BETWEEN '" + date.AddMilliseconds(-1).ToString("dd.MM.yyyy") + "' AND '" + date.AddMilliseconds(1).ToString("dd.MM.yyyy") + "' " +
+                           "GROUP BY StudentID ",
                            con);
                 using (var reader = cmd.ExecuteReader())
                 {
@@ -504,14 +532,9 @@ namespace AttendanceJournal
                     {
                         res.Add(new Entry
                         {
-                            EntryDate = reader.GetDateTime(reader.GetOrdinal("EntryDate")),
-                            NumberOfLesson = reader.GetInt32(reader.GetOrdinal("NumberOfLesson")),
-                            Room = reader.GetInt32(reader.GetOrdinal("Room")),
-                            Professor = GetProfessorByID(reader.GetInt32(reader.GetOrdinal("ProfessorID"))),
-                            Subject = GetSubgectByID(reader.GetInt32(reader.GetOrdinal("SubjectID"))),
                             Student = GetStudentByID(reader.GetInt32(reader.GetOrdinal("StudentID"))),
-                            Mark = reader.GetBoolean(reader.GetOrdinal("Mark"))
-                    }); ;
+                            Mark = reader.GetInt32(reader.GetOrdinal("cnt"))
+                        }); ;
                     }
                 }
                 con.Close();
@@ -525,9 +548,11 @@ namespace AttendanceJournal
             {
                 con.Open();
                 MySqlCommand cmd = new MySqlCommand(
-                           "SELECT NumberOfLesson, Room, SubjectId, ProfessorId, EntryDate, COUNT(Mark) " +
-                           "FROM JournalDB.Journal " +"WHERE EntryDate BETWEEN '" + date.ToString("dd-MM-yyyy") +
-                           "' AND '" + date.AddDays(1).ToString("dd-MM-yyyy") + "'"+
+                           "SELECT NumberOfLesson, Room, SubjectId, ProfessorId, EntryDate " +
+                           "FROM JournalDB.Journal INNER JOIN JournalDB.Student " +
+                           "ON JournalDB.Journal.StudentID = JournalDB.Student.ID " +
+                           "AND JournalDB.Student.GroupID = " + id + " " +
+                           "AND JournalDB.Journal.EntryDate BETWEEN '" + date.AddMilliseconds(-1).ToString("dd.MM.yyyy") +"' AND '"+ date.AddMilliseconds(1).ToString("dd.MM.yyyy")+"' "+
                            "GROUP BY NumberOfLesson, Room, SubjectId, ProfessorId, EntryDate ",
                            con);
                 using (var reader = cmd.ExecuteReader())
@@ -540,9 +565,7 @@ namespace AttendanceJournal
                             NumberOfLesson = reader.GetInt32(reader.GetOrdinal("NumberOfLesson")),
                             Room = reader.GetInt32(reader.GetOrdinal("Room")),
                             Professor = GetProfessorByID(reader.GetInt32(reader.GetOrdinal("ProfessorID"))),
-                            Subject = GetSubgectByID(reader.GetInt32(reader.GetOrdinal("SubjectID"))),
-                            Student = null,
-                            Mark = reader.GetBoolean(reader.GetOrdinal("Mark"))
+                            Subject = GetSubgectByID(reader.GetInt32(reader.GetOrdinal("SubjectID")))
                         }); ;
                     }
                 }
@@ -558,7 +581,7 @@ namespace AttendanceJournal
                 con.Open();
                 MySqlCommand cmd = new MySqlCommand(
                            "INSERT INTO JournalDB.Journal(EntryDate, NumberOfLesson, Room, ProfessorID, SubjectID, StudentID, Mark) " +
-                           $"VALUES('{entry.EntryDate.ToString("dd.MM.yyyy")}', '{entry.NumberOfLesson}', '{entry.Room}', '{entry.Professor.ID}', '{entry.Subject.ID}', '{entry.Student.ID}', '{Convert.ToInt32(entry.Mark)}');", con);
+                           $"VALUES('{entry.EntryDate.ToString("dd.MM.yyyy")}', '{entry.NumberOfLesson}', '{entry.Room}', '{entry.Professor.ID}', '{entry.Subject.ID}', '{entry.Student.ID}', '{entry.Mark}');", con);
 
                 cmd.ExecuteNonQuery();
                 con.Close();
