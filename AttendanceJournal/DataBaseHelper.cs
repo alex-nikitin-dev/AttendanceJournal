@@ -260,6 +260,37 @@ namespace AttendanceJournal
 
             return listRes;
         }
+        public static List<Students> GetListOfStudents()
+        {
+            List<Students> listRes = new List<Students>();
+            using (var con = GetNewConnection())
+            {
+                con.Open();
+                MySqlCommand cmd = new MySqlCommand(
+                           "SELECT NameOfStudent, GroupID, Phone, Head " +
+                           "FROM JournalDB.Student ",
+                           con);
+                using (var reader = cmd.ExecuteReader())
+                {
+
+                    for (int i = 0; reader.Read(); i++)
+                    {
+                        listRes.Add(new Students
+                        {
+                            ID = reader.GetInt32(reader.GetOrdinal("ID")),
+                            Name = reader.GetString(reader.GetOrdinal("NameOfStudent")),
+                            Group = reader.GetInt32(reader.GetOrdinal("GroupID")),
+                            Phone = reader.GetInt32(reader.GetOrdinal("Phone")),
+                            Head = reader.GetBoolean(reader.GetOrdinal("Head"))
+
+                        });
+                    }
+                }
+                con.Close();
+            }
+
+            return listRes;
+        }
         public static Students GetStudentByID(int id)
         {
             Students res = null;

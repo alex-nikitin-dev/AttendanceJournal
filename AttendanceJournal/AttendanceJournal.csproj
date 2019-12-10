@@ -67,6 +67,7 @@
     <Compile Include="DataBaseHelper.cs" />
     <Compile Include="DeanViewJournal.cs" />
     <Compile Include="DeanViewSubject.cs" />
+    <Compile Include="LeaderBaseFragment.cs" />
     <Compile Include="LeaderDayFragment.cs" />
     <Compile Include="LeaderProfessorsFragment.cs" />
     <Compile Include="LeaderStudentsFragment.cs" />

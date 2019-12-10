@@ -32,9 +32,11 @@ namespace AttendanceJournal
 
         private List<Entry> entries;
         private List<Students> students;
-        private LeaderEditableEntryAdapter adapter;
+        private ArrayAdapter<String> adapter;
         private DateTime date;
-        //private int userGroupID;
+        private int userGroupID;
+
+        private Context context;
         public override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -51,6 +53,7 @@ namespace AttendanceJournal
             spSubject = root.FindViewById<Spinner>(Resource.Id.sp_leader_add_entry_subject);
             spWeek = root.FindViewById<Spinner>(Resource.Id.sp_leader_add_entry_week);
             spProfessor = root.FindViewById<Spinner>(Resource.Id.sp_leader_add_entry_professor);
+            context = root.Context;
 
             
             date = DateTime.Now;
@@ -62,25 +65,40 @@ namespace AttendanceJournal
 
             entries = new List<Entry>();
             //todo change to user group id
-            //userGroupID = 0;
+            userGroupID = 0;
 
-            //students = DataBaseHelper.GetListOfStudentsByGroupID(userGroupID);
             students = new List<Students>();
-            foreach(Students s in students)
+            List<String> studentNames = new List<String>();
+            students.Add(new Students { ID = 1, Group = 0, Name = "Студент 1", Phone = 380666, Head = false });
+            students.Add(new Students { ID = 2, Group = 0, Name = "Студент 2", Phone = 380111, Head = false });
+            students.Add(new Students { ID = 2, Group = 0, Name = "Студент 3", Phone = 380111, Head = false });
+            students.Add(new Students { ID = 2, Group = 0, Name = "Студент 4", Phone = 380111, Head = false });
+            students.Add(new Students { ID = 2, Group = 0, Name = "Студент 5", Phone = 380111, Head = false });
+            students.Add(new Students { ID = 2, Group = 0, Name = "Студент 6", Phone = 380111, Head = false });
+            students.Add(new Students { ID = 2, Group = 0, Name = "Студент 7", Phone = 380111, Head = false });
+            students.Add(new Students { ID = 2, Group = 0, Name = "Студент 8", Phone = 380111, Head = false });
+            foreach (Students s in students)
                 entries.Add(new Entry { Student = s });
+            foreach (Students s in students)
+                studentNames.Add(s.Name);
 
-            adapter = new LeaderEditableEntryAdapter(root.Context, entries);
+            lvEntry.ChoiceMode = Android.Widget.ChoiceMode.Multiple;
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(root.Context, Android.Resource.Layout.SimpleListItemMultipleChoice, studentNames);
             lvEntry.Adapter = adapter;
 
 
             //subjects = DataBaseHelper.GetListOfSubject();
             subjects = new List<Subject>();
+            subjects.Add(new Subject { nameofSubject = "Физика", ID=0 });
+            subjects.Add(new Subject { nameofSubject = "Математика", ID = 1 });
             subjectsNames = new List<String>();
             foreach (Subject s in subjects)
                 subjectsNames.Add(s.nameofSubject);
 
             //professors = DataBaseHelper.GetListOfProfessors();
             professors = new List<Professor>();
+            professors.Add(new Professor { ID=0, room = 510, nameOfProfessor = "Преподаватель 1", phone = 380666 });
+            professors.Add(new Professor { ID=1, room = 310, nameOfProfessor = "Преподаватель 2", phone = 380556 });
             professorsNames = new List<String>();
             foreach (Professor p in professors)
                 professorsNames.Add(p.nameOfProfessor);
@@ -126,7 +144,10 @@ namespace AttendanceJournal
         private void saveEntries()
         {
             if (etNumbOfLesson.Text.Equals("") || etRoom.Text.Equals(""))
+            {
+                Toast.MakeText(context, "Fill in all the fields", ToastLength.Long).Show();
                 return;
+            }
 
             SparseBooleanArray sbArray = lvEntry.CheckedItemPositions;
             int i = 0;
@@ -139,56 +160,12 @@ namespace AttendanceJournal
                 if (sbArray.Get(i))
                     entry.Mark = true;
                 //DataBaseHelper.AddNewEntry(entry);
+                i++;
+                System.Diagnostics.Debug.WriteLine(entry.Student.Name + " " + entry.Mark);
             }
-        }
-    }
 
-    public class LeaderEditableEntryAdapter : BaseAdapter<Entry>
-    {
-        public List<Entry> entries;
-        private Context sContext;
-        public LeaderEditableEntryAdapter(Context context, List<Entry> list)
-        {
-            entries = list;
-            sContext = context;
-        }
-        public override Entry this[int position]
-        {
-            get
-            {
-                return entries[position];
-            }
-        }
-        public override int Count
-        {
-            get
-            {
-                return entries.Count;
-            }
-        }
-        public override long GetItemId(int position)
-        {
-            return position;
-        }
-        public override View GetView(int position, View convertView, ViewGroup parent)
-        {
-            View view = convertView;
-            try
-            {
-                if (view == null)
-                {
-                    view = LayoutInflater.From(sContext).Inflate(Resource.Layout.leader_list_item_entry_editable, parent, false);
-                }
-                TextView tvName = view.FindViewById<TextView>(Resource.Id.tv_leader_entry_name_editable);
-                tvName.Text = entries[position].EntryDate.ToString();
-                CheckBox cbMark = view.FindViewById<CheckBox>(Resource.Id.cb_leader_entry_mark_editable);
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine(ex.Message);
-            }
-            finally { }
-            return view;
+            Toast.MakeText(context, "New entry saved successfully", ToastLength.Long).Show();
+            FragmentManager.PopBackStack();
         }
     }
 }
