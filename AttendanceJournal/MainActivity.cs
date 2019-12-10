@@ -29,8 +29,8 @@ namespace AttendanceJournal
             Android.Support.V7.Widget.Toolbar toolbar = FindViewById<Android.Support.V7.Widget.Toolbar>(Resource.Id.toolbar);
             SetSupportActionBar(toolbar);
 
-            FloatingActionButton fab = FindViewById<FloatingActionButton>(Resource.Id.fab);
-            fab.Click += FabOnClick;
+            //FloatingActionButton fab = FindViewById<FloatingActionButton>(Resource.Id.fab);
+            //fab.Click += FabOnClick;
 
             drawer = FindViewById<DrawerLayout>(Resource.Id.drawer_layout);
             ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, Resource.String.navigation_drawer_open, Resource.String.navigation_drawer_close);
@@ -105,6 +105,7 @@ namespace AttendanceJournal
             }
             else if (id == Resource.Id.nav_gLeader_students)
             {
+                
                 SupportFragmentManager.BeginTransaction()
                               .Replace(Resource.Id.content_frame, new LeaderStudentsFragment())
                               .Commit();
@@ -123,7 +124,9 @@ namespace AttendanceJournal
             }
             else if (id == Resource.Id.nav_gLeader_day)
             {
-                //There is menu for Group Leader 
+                SupportFragmentManager.BeginTransaction()
+                              .Replace(Resource.Id.content_frame, new LeaderDayFragment())
+                              .Commit();
             }
             else if (id == Resource.Id.nav_gLeader_week)
             {

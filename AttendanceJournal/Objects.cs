@@ -15,6 +15,11 @@ namespace AttendanceJournal
     
     public class Students
     {
+        public int ID
+        {
+            get;
+            set;
+        }
         public string Name
         {
             get;
@@ -39,6 +44,11 @@ namespace AttendanceJournal
     }
     public class Group
     {
+        public int ID
+        {
+            get;
+            set;
+        }
         public int course
         {
             get;
@@ -53,6 +63,11 @@ namespace AttendanceJournal
     }
     public class Subject
     {
+        public int ID
+        {
+            get;
+            set;
+        }
         public string nameofSubject
         {
             get;
@@ -62,6 +77,11 @@ namespace AttendanceJournal
     }
     public class Professor
     {
+        public int ID
+        {
+            get;
+            set;
+        }
         public string nameOfProfessor
         {
             get;
@@ -78,4 +98,43 @@ namespace AttendanceJournal
             set;
         }
     }
+    public class Entry
+    {
+        public DateTime EntryDate
+        {
+            get;
+            set;
+        }
+        public int NumberOfLesson
+        {
+            get;
+            set;
+        }
+        public int Room
+        {
+            get;
+            set;
+        }
+        public Professor Professor
+        {
+            get;
+            set;
+        }
+        public Subject Subject
+        {
+            get;
+            set;
+        }
+        public Students Student
+        {
+            get;
+            set;
+        }
+        public bool Mark
+        {
+            get;
+            set;
+        }
+    }
+
 }

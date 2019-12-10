@@ -65,17 +65,16 @@
     <Compile Include="DeanViewProfessor.cs" />
     <Compile Include="DeanViewStudent.cs" />
     <Compile Include="DataBaseHelper.cs" />
-<<<<<<< HEAD
     <Compile Include="DeanViewJournal.cs" />
     <Compile Include="DeanViewSubject.cs" />
-=======
->>>>>>> 09dfd8d1cd41fde3c3717ee91b3c59482ea70dbd
+    <Compile Include="LeaderDayFragment.cs" />
     <Compile Include="LeaderProfessorsFragment.cs" />
     <Compile Include="LeaderStudentsFragment.cs" />
     <Compile Include="LeaderSubjectsFragment.cs" />
     <Compile Include="LoginActivity.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="Objects.cs" />
+    <Compile Include="LeaderAddEntryFragment.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -299,52 +298,31 @@
     </AndroidResource>
   </ItemGroup>
   <ItemGroup>
-<<<<<<< HEAD
     <AndroidResource Include="Resources\layout\dean_content_list_group.xml">
-=======
-    <AndroidResource Include="Resources\layout\leader_list_item_students.xml">
->>>>>>> 09dfd8d1cd41fde3c3717ee91b3c59482ea70dbd
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>
   <ItemGroup>
-<<<<<<< HEAD
     <AndroidResource Include="Resources\layout\dean_content_list_student.xml">
-=======
-    <AndroidResource Include="Resources\layout\leader_fragment_students.xml">
->>>>>>> 09dfd8d1cd41fde3c3717ee91b3c59482ea70dbd
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>
   <ItemGroup>
-<<<<<<< HEAD
     <AndroidResource Include="Resources\layout\dean_view_subject.xml">
-=======
-    <AndroidResource Include="Resources\layout\leader_fragment_subjects.xml">
->>>>>>> 09dfd8d1cd41fde3c3717ee91b3c59482ea70dbd
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>
   <ItemGroup>
-<<<<<<< HEAD
     <AndroidResource Include="Resources\layout\dean_content_list_subject.xml">
-=======
-    <AndroidResource Include="Resources\layout\leader_fragment_professors.xml">
->>>>>>> 09dfd8d1cd41fde3c3717ee91b3c59482ea70dbd
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>
   <ItemGroup>
-<<<<<<< HEAD
     <AndroidResource Include="Resources\layout\dean_add_subject.xml">
-=======
-    <AndroidResource Include="Resources\layout\leader_list_item_subjects.xml">
->>>>>>> 09dfd8d1cd41fde3c3717ee91b3c59482ea70dbd
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>
   <ItemGroup>
-<<<<<<< HEAD
     <AndroidResource Include="Resources\layout\dean_content_list_professor.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
@@ -377,12 +355,32 @@
   <ItemGroup>
     <AndroidResource Include="Resources\layout\leader_list_item_subjects.xml" />
   </ItemGroup>
-=======
-    <AndroidResource Include="Resources\layout\leader_list_item_professors.xml">
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\leader_fragment_day.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\leader_fragment_week.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\leader_list_item_entry.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>
->>>>>>> 09dfd8d1cd41fde3c3717ee91b3c59482ea70dbd
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\leader_fragment_add_entry.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\leader_list_item_entry_editable.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\menu\item_save.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
     Other similar extension points exist, see Microsoft.Common.targets.
