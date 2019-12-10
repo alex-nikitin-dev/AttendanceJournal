@@ -25,7 +25,7 @@ namespace AttendanceJournal
             get;
             set;
         }
-        public int Group
+        public Group Group
         {
             get;
             set;

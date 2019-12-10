@@ -16,6 +16,8 @@ namespace AttendanceJournal
 {
     public class LeaderDayFragment : Android.Support.V4.App.Fragment
     {
+        private int UserID;
+        private Students user;
         private Button btnLeft;
         private Button btnRight;
         private ListView lvEntry;
@@ -27,6 +29,7 @@ namespace AttendanceJournal
         public override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
+            HasOptionsMenu = true;
         }
 
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -36,12 +39,20 @@ namespace AttendanceJournal
             btnLeft = root.FindViewById<Button>(Resource.Id.btn_leader_day_left);
             btnRight = root.FindViewById<Button>(Resource.Id.btn_leader_day_right);
 
+            if (Arguments != null && Arguments.ContainsKey("UserID"))
+            {
+                UserID = Arguments.GetInt("UserID");
+                user = DataBaseHelper.GetStudentByUserID(UserID);
+            }
+            //userGroupID = user.Group.ID;
+            userGroupID = 2;
+
             entries = new List<Entry>();
-            //todo change to user group id
-            userGroupID = 0;
-            date = DateTime.Now;
-            //entries = DataBaseHelper.GetListOfDayEntriesByGroupIDAndDate(0, date);
-            entries.Add(new Entry { EntryDate=date, NumberOfLesson=2, Room=500, Professor=new Professor { },Subject=new Subject { }, Student=new Students { } });
+            date = DateTime.Today;
+            entries = DataBaseHelper.GetListOfDayEntriesByGroupIDAndDate(userGroupID, date);
+            //foreach(Entry entry in entries)
+            //    System.Diagnostics.Debug.WriteLine(entry.Professor.nameOfProfessor);
+            //entries.Add(new Entry { EntryDate=date, NumberOfLesson=2, Room=500, Professor=new Professor { },Subject=new Subject { }, Student=new Students { } });
             //entries.Add(new Students { Group = 0, Name = "Студент 2", Phone = 380111, Head = false });
 
             adapter = new LeaderEntryAdapter(root.Context, entries);
@@ -57,6 +68,26 @@ namespace AttendanceJournal
             FragmentManager.BeginTransaction()
                               .Replace(Resource.Id.content_frame, new LeaderAddEntryFragment())
                               .Commit();
+        }
+        public override void OnCreateOptionsMenu(IMenu menu, MenuInflater inflater)
+        {
+            inflater.Inflate(Resource.Menu.item_details, menu);
+        }
+        public override bool OnOptionsItemSelected(IMenuItem item)
+        {
+            int id = item.ItemId;
+            if (id == Resource.Id.menu_item_details)
+            {
+                Bundle bundle = new Bundle();
+                bundle.PutInt("UserID", UserID);
+                Android.Support.V4.App.Fragment fragment = new LeaderDayDetailsFragment();
+                FragmentManager.BeginTransaction()
+                              .Replace(Resource.Id.content_frame, fragment)
+                              .Commit();
+                return true;
+            }
+
+            return base.OnOptionsItemSelected(item);
         }
 
         public void updateEntries()
@@ -105,14 +136,10 @@ namespace AttendanceJournal
                     view = LayoutInflater.From(sContext).Inflate(Resource.Layout.leader_list_item_entry, parent, false);
                 }
                 TextView tvName = view.FindViewById<TextView>(Resource.Id.tv_leader_entry_name);
-                tvName.Text = entries[position].EntryDate.ToString()+" "+
-                    entries[position].NumberOfLesson+"les "+ 
-                    entries[position].Professor.nameOfProfessor + " " +
-                    entries[position].Subject.nameofSubject+" "+
-                    entries[position].Student.Name+" "+
-                    entries[position].Mark.ToString();
-                //TextView tvPasses = view.FindViewById<TextView>(Resource.Id.tv_leader_entry_passes);
+                tvName.Text = entries[position].Student.Name;
+                TextView tvPasses = view.FindViewById<TextView>(Resource.Id.tv_leader_entry_passes);
                 //tvPasses.Text = entries[position].Passes.ToString();
+                System.Diagnostics.Debug.WriteLine(entries[position].Student.Name + " " + entries[position].Mark);
             }
             catch (Exception ex)
             {

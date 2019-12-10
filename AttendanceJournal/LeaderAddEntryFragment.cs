@@ -15,6 +15,9 @@ namespace AttendanceJournal
 {
     public class LeaderAddEntryFragment : Android.Support.V4.App.Fragment
     {
+        private int UserID;
+        private Students user;
+
         private ListView lvEntry;
         private Spinner spSubject;
         private Spinner spProfessor;
@@ -55,8 +58,15 @@ namespace AttendanceJournal
             spProfessor = root.FindViewById<Spinner>(Resource.Id.sp_leader_add_entry_professor);
             context = root.Context;
 
-            
-            date = DateTime.Now;
+            if (Arguments != null && Arguments.ContainsKey("UserID"))
+            {
+                UserID = Arguments.GetInt("UserID");
+                user = DataBaseHelper.GetStudentByUserID(UserID);
+            }
+            //userGroupID = user.Group.ID;
+            userGroupID = 2;
+
+            date = DateTime.Today;
             tvDate.Text = date.ToShortDateString();
             tvDate.Click += (sender, e) => {
                 DatePickerDialog dialog = new DatePickerDialog(root.Context, OnDateSet, date.Year, date.Month-1, date.Day);
@@ -65,40 +75,37 @@ namespace AttendanceJournal
 
             entries = new List<Entry>();
             //todo change to user group id
-            userGroupID = 0;
 
             students = new List<Students>();
+            students = DataBaseHelper.GetListOfStudentsByGroupID(userGroupID);
             List<String> studentNames = new List<String>();
-            students.Add(new Students { ID = 1, Group = 0, Name = "Студент 1", Phone = 380666, Head = false });
-            students.Add(new Students { ID = 2, Group = 0, Name = "Студент 2", Phone = 380111, Head = false });
-            students.Add(new Students { ID = 2, Group = 0, Name = "Студент 3", Phone = 380111, Head = false });
-            students.Add(new Students { ID = 2, Group = 0, Name = "Студент 4", Phone = 380111, Head = false });
-            students.Add(new Students { ID = 2, Group = 0, Name = "Студент 5", Phone = 380111, Head = false });
-            students.Add(new Students { ID = 2, Group = 0, Name = "Студент 6", Phone = 380111, Head = false });
-            students.Add(new Students { ID = 2, Group = 0, Name = "Студент 7", Phone = 380111, Head = false });
-            students.Add(new Students { ID = 2, Group = 0, Name = "Студент 8", Phone = 380111, Head = false });
+            //students.Add(new Students { ID = 1, Name = "Студент 1", Phone = 380666, Head = false });
+            //students.Add(new Students { ID = 2,  Name = "Студент 2", Phone = 380111, Head = false });
+            //students.Add(new Students { ID = 2,  Name = "Студент 3", Phone = 380111, Head = false });
             foreach (Students s in students)
                 entries.Add(new Entry { Student = s });
             foreach (Students s in students)
                 studentNames.Add(s.Name);
 
             lvEntry.ChoiceMode = Android.Widget.ChoiceMode.Multiple;
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(root.Context, Android.Resource.Layout.SimpleListItemMultipleChoice, studentNames);
+            adapter = new ArrayAdapter<String>(root.Context, Android.Resource.Layout.SimpleListItemMultipleChoice, studentNames);
             lvEntry.Adapter = adapter;
 
 
             //subjects = DataBaseHelper.GetListOfSubject();
             subjects = new List<Subject>();
-            subjects.Add(new Subject { nameofSubject = "Физика", ID=0 });
-            subjects.Add(new Subject { nameofSubject = "Математика", ID = 1 });
+            subjects = DataBaseHelper.GetListOfSubject();
+            //subjects.Add(new Subject { nameofSubject = "Физика", ID=0 });
+            //subjects.Add(new Subject { nameofSubject = "Математика", ID = 1 });
             subjectsNames = new List<String>();
             foreach (Subject s in subjects)
                 subjectsNames.Add(s.nameofSubject);
 
             //professors = DataBaseHelper.GetListOfProfessors();
             professors = new List<Professor>();
-            professors.Add(new Professor { ID=0, room = 510, nameOfProfessor = "Преподаватель 1", phone = 380666 });
-            professors.Add(new Professor { ID=1, room = 310, nameOfProfessor = "Преподаватель 2", phone = 380556 });
+            professors = DataBaseHelper.GetListOfProfessors();
+            //professors.Add(new Professor { ID=0, room = 510, nameOfProfessor = "Преподаватель 1", phone = 380666 });
+            //professors.Add(new Professor { ID=1, room = 310, nameOfProfessor = "Преподаватель 2", phone = 380556 });
             professorsNames = new List<String>();
             foreach (Professor p in professors)
                 professorsNames.Add(p.nameOfProfessor);
@@ -128,7 +135,6 @@ namespace AttendanceJournal
         {
             inflater.Inflate(Resource.Menu.item_save, menu);
         }
-
         public override bool OnOptionsItemSelected(IMenuItem item)
         {
             int id = item.ItemId;
@@ -165,7 +171,9 @@ namespace AttendanceJournal
             }
 
             Toast.MakeText(context, "New entry saved successfully", ToastLength.Long).Show();
-            FragmentManager.PopBackStack();
+            FragmentManager.BeginTransaction()
+                              .Replace(Resource.Id.content_frame, new LeaderDayFragment())
+                              .Commit();
         }
     }
 }

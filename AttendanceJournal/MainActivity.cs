@@ -72,6 +72,10 @@ namespace AttendanceJournal
         }
         public bool OnNavigationItemSelected(IMenuItem item)
         {
+            Bundle bundle = new Bundle();
+            //todo replace to user id
+            bundle.PutInt("UserID", 2);
+
             int id = item.ItemId;
 
             if (id == Resource.Id.nav_dean_students)
@@ -97,27 +101,34 @@ namespace AttendanceJournal
             }
             else if (id == Resource.Id.nav_gLeader_students)
             {
-                
+                Android.Support.V4.App.Fragment fragment = new LeaderStudentsFragment();
+                fragment.Arguments = bundle;
                 SupportFragmentManager.BeginTransaction()
-                              .Replace(Resource.Id.content_frame, new LeaderStudentsFragment())
+                              .Replace(Resource.Id.content_frame, fragment)
                               .Commit();
             }
             else if (id == Resource.Id.nav_gLeader_subjects)
             {
+                Android.Support.V4.App.Fragment fragment = new LeaderSubjectsFragment();
+                fragment.Arguments = bundle;
                 SupportFragmentManager.BeginTransaction()
-                              .Replace(Resource.Id.content_frame, new LeaderSubjectsFragment())
+                              .Replace(Resource.Id.content_frame, fragment)
                               .Commit();
             }
             else if (id == Resource.Id.nav_gLeader_professors)
             {
+                Android.Support.V4.App.Fragment fragment = new LeaderProfessorsFragment();
+                fragment.Arguments = bundle;
                 SupportFragmentManager.BeginTransaction()
-                              .Replace(Resource.Id.content_frame, new LeaderProfessorsFragment())
+                              .Replace(Resource.Id.content_frame, fragment)
                               .Commit();
             }
             else if (id == Resource.Id.nav_gLeader_day)
             {
+                Android.Support.V4.App.Fragment fragment = new LeaderDayFragment();
+                fragment.Arguments = bundle;
                 SupportFragmentManager.BeginTransaction()
-                              .Replace(Resource.Id.content_frame, new LeaderDayFragment())
+                              .Replace(Resource.Id.content_frame, fragment)
                               .Commit();
             }
             else if (id == Resource.Id.nav_gLeader_week)
