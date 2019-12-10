@@ -47,7 +47,6 @@ namespace AttendanceJournal
             //todo change to user group id
             userGroupID = 2;
 
-            date = DateTime.Today;
 
             entries = new List<Entry>();
             entries = DataBaseHelper.GetListOfDayDelailEntriesByGroupIDAndDate(userGroupID, date);
@@ -115,7 +114,8 @@ namespace AttendanceJournal
                 TextView tvSubject = view.FindViewById<TextView>(Resource.Id.tv_leader_entry_detail_subject);
                 tvSubject.Text = entries[position].Subject.nameofSubject;
                 TextView tvProfessor = view.FindViewById<TextView>(Resource.Id.tv_leader_entry_detail_professor);
-                tvProfessor.Text = entries[position].Professor.nameOfProfessor;
+                //tvProfessor.Text = entries[position].Professor.nameOfProfessor;
+                tvProfessor.Text = entries[position].EntryDate.ToString("dd.MM.yyyy");
                 TextView tvRoom = view.FindViewById<TextView>(Resource.Id.tv_leader_entry_detail_room);
                 tvRoom.Text = "room " + entries[position].Room.ToString();
             }

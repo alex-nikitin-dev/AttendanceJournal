@@ -115,7 +115,7 @@ namespace AttendanceJournal
             {
                 Bundle bundle = new Bundle();
                 bundle.PutInt("UserID", UserID);
-                bundle.PutString("Date", date.ToString("dd.MM.yyyy"));
+                bundle.PutString("Date", date.ToString());
                 Android.Support.V4.App.Fragment fragment = new LeaderDayDetailsFragment();
                 FragmentManager.BeginTransaction()
                               .Replace(Resource.Id.content_frame, fragment)
@@ -124,14 +124,6 @@ namespace AttendanceJournal
             }
 
             return base.OnOptionsItemSelected(item);
-        }
-
-        public void updateEntries()
-        {
-            date = date.AddDays(-1);
-            entries = new List<Entry>();
-            entries = DataBaseHelper.GetListOfDayEntriesByGroupIDAndDate(userGroupID, date);
-            adapter.NotifyDataSetChanged();
         }
     }
 

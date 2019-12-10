@@ -518,18 +518,19 @@ namespace AttendanceJournal
             {
                 con.Open();
                 MySqlCommand cmd = new MySqlCommand(
-                           "SELECT StudentID, COUNT(Mark) as cnt " +
+                           "SELECT StudentID, COUNT(Mark) as cnt, EntryDate " +
                            "FROM JournalDB.Journal INNER JOIN JournalDB.Student " +
                            "ON JournalDB.Journal.StudentID = JournalDB.Student.ID " +
                            "AND JournalDB.Student.GroupID = " + id + " " +
                            "AND Mark = '" + 1 + "' " +
                            "AND JournalDB.Journal.EntryDate BETWEEN '" + date.AddMilliseconds(-1).ToString("dd.MM.yyyy") + "' AND '" + date.AddMilliseconds(1).ToString("dd.MM.yyyy") + "' " +
-                           "GROUP BY StudentID ",
+                           "GROUP BY StudentID, EntryDate ",
                            con);
                 using (var reader = cmd.ExecuteReader())
                 {
                     for (int i = 0; reader.Read(); i++)
                     {
+                        System.Diagnostics.Debug.WriteLine(reader.GetDateTime(reader.GetOrdinal("EntryDate")));
                         res.Add(new Entry
                         {
                             Student = GetStudentByID(reader.GetInt32(reader.GetOrdinal("StudentID"))),
@@ -552,16 +553,17 @@ namespace AttendanceJournal
                            "FROM JournalDB.Journal INNER JOIN JournalDB.Student " +
                            "ON JournalDB.Journal.StudentID = JournalDB.Student.ID " +
                            "AND JournalDB.Student.GroupID = " + id + " " +
-                           "AND JournalDB.Journal.EntryDate BETWEEN '" + date.AddMilliseconds(-1).ToString("dd.MM.yyyy") +"' AND '"+ date.AddMilliseconds(1).ToString("dd.MM.yyyy")+"' "+
+                          // "AND JournalDB.Journal.EntryDate = '" + date.ToString("dd.MM.yyyy") + "' " + 
                            "GROUP BY NumberOfLesson, Room, SubjectId, ProfessorId, EntryDate ",
                            con);
                 using (var reader = cmd.ExecuteReader())
                 {
                     for (int i = 0; reader.Read(); i++)
                     {
+                            System.Diagnostics.Debug.WriteLine(reader.GetDateTime(reader.GetOrdinal("EntryDate")));
                         res.Add(new Entry
                         {
-                            EntryDate = reader.GetDateTime(reader.GetOrdinal("EntryDate")),
+                        //EntryDate = reader.GetString(reader.GetOrdinal("EntryDate")),
                             NumberOfLesson = reader.GetInt32(reader.GetOrdinal("NumberOfLesson")),
                             Room = reader.GetInt32(reader.GetOrdinal("Room")),
                             Professor = GetProfessorByID(reader.GetInt32(reader.GetOrdinal("ProfessorID"))),
