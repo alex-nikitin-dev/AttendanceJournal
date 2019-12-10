@@ -176,7 +176,7 @@ namespace AttendanceJournal
             {
                 con.Open();
                 MySqlCommand cmd = new MySqlCommand(
-                           "SELECT Course, NumberOfGroup " +
+                           "SELECT ID, Course, NumberOfGroup " +
                            "FROM JournalDB.GroupOfStudents ",
                            con);
                 using (var reader = cmd.ExecuteReader())
@@ -324,257 +324,255 @@ namespace AttendanceJournal
                 con.Close();
             }
             return res;
+        }
+            public static List<Mark> GetListOfCountMarksByStudentID(List<Students> students)
+            {
+                List<Mark> res = new List<Mark>();
+                for (int i = 0; i < students.Count; i++)
+                {
+                    using (var con = GetNewConnection())
+                    {
+                        con.Open();
+                        MySqlCommand cmd = new MySqlCommand(
+                                   "SELECT COUNT(Mark)" +
+                                   "FROM JournalDB.Journal " +
+                                   $"WHERE Mark='0' AND StudentID='{students[i].ID}'",
+                                   con);
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            reader.Read();
+                            res.Add(new Mark
+                            {
+                                mark = reader.GetInt32(0)
 
-        public static List<Mark> GetListOfCountMarksByStudentID(List<Students> students)
-        {
-            List<Mark> res = new List<Mark>();
-            for (int i = 0; i < students.Count; i++)
+                            });
+                        }
+                        con.Close();
+                    }
+                }
+                return res;
+            }
+            public static int GetGroupIDByCorseAndNumber(int course, int groupNumber)
+            {
+                int result = -1;
+                using (var con = GetNewConnection())
+                {
+                    con.Open();
+                    MySqlCommand cmd = new MySqlCommand(
+                               "SELECT ID " +
+                               "FROM JournalDB.GroupOfStudents " +
+                               $"WHERE NumberOfGroup='{groupNumber}' AND Course='{course}';",
+                               con);
+                    using (var reader = cmd.ExecuteReader())
+                    {
+
+                        for (int i = 0; reader.Read(); i++)
+                        {
+                            if (i > 0)
+                            {
+                                throw new Exception("database error: group is not unique");
+                            }
+                            result = (int)reader.GetValue(0);
+                        }
+                    }
+                    con.Close();
+                }
+
+                return result;
+
+            }
+            public static int GetGroupIDByNumberAndYear(int group, int year)
+            {
+                int result = -1;
+                using (var con = GetNewConnection())
+                {
+                    con.Open();
+                    MySqlCommand cmd = new MySqlCommand(
+                               "SELECT ID " +
+                               "FROM JournalDB.GroupOfStudents " +
+                               $"WHERE NumberOfGroup='{group}' AND Entryyear='{year}';",
+                               con);
+                    using (var reader = cmd.ExecuteReader())
+                    {
+
+                        for (int i = 0; reader.Read(); i++)
+                        {
+                            if (i > 0)
+                            {
+                                throw new Exception("database error: group is not unique");
+                            }
+                            result = (int)reader.GetValue(0);
+                        }
+                    }
+                    con.Close();
+                }
+
+                return result;
+
+            }
+
+            public static Professor GetProfessorByID(int id)
+            {
+                Professor res = null;
+                using (var con = GetNewConnection())
+                {
+                    con.Open();
+                    MySqlCommand cmd = new MySqlCommand(
+                               "SELECT * " +
+                               "FROM JournalDB.Professor " +
+                               $"WHERE ID='{Id}';",
+                               con);
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        for (int i = 0; reader.Read(); i++)
+                        {
+                            if (i > 0)
+                            {
+                                throw new Exception("database error: Subject is not unique");
+                            }
+                            res = new Professor
+                            {
+                                ID = id,
+                                nameOfProfessor = reader.GetString(reader.GetOrdinal("NameOfProfessor")),
+                                phone = reader.GetInt32(reader.GetOrdinal("Phone")),
+                                room = reader.GetInt32(reader.GetOrdinal("Room"))
+                            };
+                        }
+                    }
+                    con.Close();
+                }
+                return res;
+            }
+            public static List<Professor> GetListOfProfessors()
+            {
+                List<Professor> res = new List<Professor>();
+                using (var con = GetNewConnection())
+                {
+                    con.Open();
+                    MySqlCommand cmd = new MySqlCommand(
+                               "SELECT * " +
+                               "FROM JournalDB.Professor; ", con);
+                    using (var reader = cmd.ExecuteReader())
+                    {
+
+                        for (int i = 0; reader.Read(); i++)
+                        {
+                            res.Add(new Professor
+                            {
+                                ID = reader.GetInt32(reader.GetOrdinal("ID")),
+                                nameOfProfessor = reader.GetString(reader.GetOrdinal("NameOfProfessor")),
+                                phone = reader.GetInt32(reader.GetOrdinal("Phone")),
+                                room = reader.GetInt32(reader.GetOrdinal("Room"))
+                            }); ;
+                        }
+                    }
+                    con.Close();
+                }
+
+                return res;
+            }
+            public static void AddNewProfessor(string name, int phone, int room)
             {
                 using (var con = GetNewConnection())
                 {
                     con.Open();
                     MySqlCommand cmd = new MySqlCommand(
-                               "SELECT COUNT(Mark)" +
-                               "FROM JournalDB.Journal " +
-                               $"WHERE Mark='0' AND StudentID='{students[i].ID}'",
-                               con);
-                    using (var reader = cmd.ExecuteReader())
-                    {
-                        reader.Read();
-                        res.Add(new Mark
-                            {
-                                mark = reader.GetInt32(0)
-
-                            });
-                    }
+                               "INSERT INTO JournalDB.Professor(NameOfProfessor, Phone,Room) " +
+                               $"VALUES('{ name }', '{phone}','{room}');", con);
+                    cmd.ExecuteNonQuery();
                     con.Close();
                 }
             }
-            return res;
-
-
-        }
-        public static int GetGroupIDByCorseAndNumber(int course, int groupNumber)
-        {
-            int result = -1;
-            using (var con = GetNewConnection())
+            public static List<Entry> GetListOfDayEntriesByGroupIDAndDate(int id, DateTime date)
             {
-                con.Open();
-                MySqlCommand cmd = new MySqlCommand(
-                           "SELECT ID " +
-                           "FROM JournalDB.GroupOfStudents " +
-                           $"WHERE NumberOfGroup='{groupNumber}' AND Course='{course}';",
-                           con);
-                using (var reader = cmd.ExecuteReader())
+                List<Entry> res = new List<Entry>();
+                using (var con = GetNewConnection())
                 {
-
-                    for (int i = 0; reader.Read(); i++)
+                    con.Open();
+                    MySqlCommand cmd = new MySqlCommand(
+                               "SELECT * " +
+                               "FROM JournalDB.Journal ",
+                               con);
+                    using (var reader = cmd.ExecuteReader())
                     {
-                        if (i > 0)
+                        for (int i = 0; reader.Read(); i++)
                         {
-                            throw new Exception("database error: group is not unique");
+                            res.Add(new Entry
+                            {
+                                EntryDate = reader.GetDateTime(reader.GetOrdinal("EntryDate")),
+                                NumberOfLesson = reader.GetInt32(reader.GetOrdinal("NumberOfLesson")),
+                                Room = reader.GetInt32(reader.GetOrdinal("Room")),
+                                Professor = GetProfessorByID(reader.GetInt32(reader.GetOrdinal("ProfessorID"))),
+                                Subject = GetSubgectByID(reader.GetInt32(reader.GetOrdinal("SubjectID"))),
+                                Student = GetStudentByID(reader.GetInt32(reader.GetOrdinal("StudentID"))),
+                                Mark = reader.GetBoolean(reader.GetOrdinal("Mark"))
+                            }); ;
                         }
-                        result = (int)reader.GetValue(0);
                     }
+                    con.Close();
                 }
-                con.Close();
+                return res;
             }
-
-            return result;
-
-        }
-        public static int GetGroupIDByNumberAndYear(int group, int year)
-        {
-            int result = -1;
-            using (var con = GetNewConnection())
-            {
-                con.Open();
-                MySqlCommand cmd = new MySqlCommand(
-                           "SELECT ID " +
-                           "FROM JournalDB.GroupOfStudents " +
-                           $"WHERE NumberOfGroup='{group}' AND Entryyear='{year}';",
-                           con);
-                using (var reader = cmd.ExecuteReader())
-                {
-
-                    for (int i = 0; reader.Read(); i++)
-                    {
-                        if (i > 0)
-                        {
-                            throw new Exception("database error: group is not unique");
-                        }
-                        result = (int)reader.GetValue(0);
-                    }
-                }
-                con.Close();
-            }
-
-            return result;
-
-        }
-
-        public static Professor GetProfessorByID(int id)
-        {
-            Professor res = null;
-            using (var con = GetNewConnection())
-            {
-                con.Open();
-                MySqlCommand cmd = new MySqlCommand(
-                           "SELECT * " +
-                           "FROM JournalDB.Professor " +
-                           $"WHERE ID='{Id}';",
-                           con);
-                using (var reader = cmd.ExecuteReader())
-                {
-                    for (int i = 0; reader.Read(); i++)
-                    {
-                        if (i > 0)
-                        {
-                            throw new Exception("database error: Subject is not unique");
-                        }
-                        res = new Professor
-                        {
-                            ID=id,
-                            nameOfProfessor = reader.GetString(reader.GetOrdinal("NameOfProfessor")),
-                            phone = reader.GetInt32(reader.GetOrdinal("Phone")),
-                            room = reader.GetInt32(reader.GetOrdinal("Room"))
-                        };
-                    }
-                }
-                con.Close();
-            }
-            return res;
-        }
-        public static List<Professor> GetListOfProfessors()
-        {
-            List<Professor> res = new List<Professor>();
-            using (var con = GetNewConnection())
-            {
-                con.Open();
-                MySqlCommand cmd = new MySqlCommand(
-                           "SELECT * " +
-                           "FROM JournalDB.Professor; ", con);
-                using (var reader = cmd.ExecuteReader())
-                {
-
-                    for (int i = 0; reader.Read(); i++)
-                    {
-                        res.Add(new Professor
-                        {
-                            ID = reader.GetInt32(reader.GetOrdinal("ID")),
-                            nameOfProfessor = reader.GetString(reader.GetOrdinal("NameOfProfessor")),
-                            phone = reader.GetInt32(reader.GetOrdinal("Phone")),
-                            room = reader.GetInt32(reader.GetOrdinal("Room"))
-                        }); ;
-                    }
-                }
-                con.Close();
-            }
-
-            return res;
-        }
-        public static void AddNewProfessor(string name, int phone, int room)
-        {
-            using (var con = GetNewConnection())
-            {
-                con.Open();
-                MySqlCommand cmd = new MySqlCommand(
-                           "INSERT INTO JournalDB.Professor(NameOfProfessor, Phone,Room) " +
-                           $"VALUES('{ name }', '{phone}','{room}');", con);
-                cmd.ExecuteNonQuery();
-                con.Close();
-            }
-        }
-        public static List<Entry> GetListOfDayEntriesByGroupIDAndDate(int id, DateTime date)
-        {
-            List<Entry> res = new List<Entry>();
-            using (var con = GetNewConnection())
-            {
-                con.Open();
-                MySqlCommand cmd = new MySqlCommand(
-                           "SELECT * " +
-                           "FROM JournalDB.Journal ",
-                           con);
-                using (var reader = cmd.ExecuteReader())
-                {
-                    for (int i = 0; reader.Read(); i++)
-                    {
-                        res.Add(new Entry
-                        {
-                            EntryDate = reader.GetDateTime(reader.GetOrdinal("EntryDate")),
-                            NumberOfLesson = reader.GetInt32(reader.GetOrdinal("NumberOfLesson")),
-                            Room = reader.GetInt32(reader.GetOrdinal("Room")),
-                            Professor = GetProfessorByID(reader.GetInt32(reader.GetOrdinal("ProfessorID"))),
-                            Subject = GetSubgectByID(reader.GetInt32(reader.GetOrdinal("SubjectID"))),
-                            Student = GetStudentByID(reader.GetInt32(reader.GetOrdinal("StudentID"))),
-                            Mark = reader.GetBoolean(reader.GetOrdinal("Mark"))
-                        }); ;
-                    }
-                }
-                con.Close();
-            }
-            return res;
-        }
-        public static void AddNewEntry(Entry entry)
-        {
-            using (var con = GetNewConnection())
-            {
-                con.Open();
-                MySqlCommand cmd = new MySqlCommand(
-                           "INSERT INTO JournalDB.Journal(EntryDate, NumberOfLesson, Room, ProfessorID, SubjectID, StudentID, Mark) " +
-                           $"VALUES('{ entry.EntryDate }', '{entry.NumberOfLesson}', '{entry.Room}', '{entry.Professor.ID}', '{entry.Subject.ID}', '{entry.Student.ID}', '{entry.Mark}');", con);
-                cmd.ExecuteNonQuery();
-                con.Close();
-            }
-
-        }
-        public static string GetUserPwdHash(string login)
-        {
-            string result = string.Empty;
-            using (var con = GetNewConnection())
-            {
-                con.Open();
-                MySqlCommand cmd = new MySqlCommand(
-                           "SELECT Password " +
-                           "FROM JournalDB.User " +
-                           $"WHERE login='{login}'",
-                           con);
-                using (var reader = cmd.ExecuteReader())
-                {
-
-                    for (int i = 0; reader.Read(); i++)
-                    {
-                        if (i > 0)
-                        {
-                            throw new Exception("database error: login is not unique");
-                        }
-                        result = (string)reader.GetValue(0);
-                    }
-                }
-
-
-                con.Close();
-            }
-
-            return result;
-        }
-
-        public static bool IsServerAlive()
-        {
-            try
+            public static void AddNewEntry(Entry entry)
             {
                 using (var con = GetNewConnection())
                 {
                     con.Open();
+                    MySqlCommand cmd = new MySqlCommand(
+                               "INSERT INTO JournalDB.Journal(EntryDate, NumberOfLesson, Room, ProfessorID, SubjectID, StudentID, Mark) " +
+                               $"VALUES('{ entry.EntryDate }', '{entry.NumberOfLesson}', '{entry.Room}', '{entry.Professor.ID}', '{entry.Subject.ID}', '{entry.Student.ID}', '{entry.Mark}');", con);
+                    cmd.ExecuteNonQuery();
                     con.Close();
                 }
+
             }
-            catch (MySqlException)
+            public static string GetUserPwdHash(string login)
             {
-                return false;
+                string result = string.Empty;
+                using (var con = GetNewConnection())
+                {
+                    con.Open();
+                    MySqlCommand cmd = new MySqlCommand(
+                               "SELECT Password " +
+                               "FROM JournalDB.User " +
+                               $"WHERE login='{login}'",
+                               con);
+                    using (var reader = cmd.ExecuteReader())
+                    {
+
+                        for (int i = 0; reader.Read(); i++)
+                        {
+                            if (i > 0)
+                            {
+                                throw new Exception("database error: login is not unique");
+                            }
+                            result = (string)reader.GetValue(0);
+                        }
+                    }
+
+
+                    con.Close();
+                }
+
+                return result;
             }
 
-            return true;
+            public static bool IsServerAlive()
+            {
+                try
+                {
+                    using (var con = GetNewConnection())
+                    {
+                        con.Open();
+                        con.Close();
+                    }
+                }
+                catch (MySqlException)
+                {
+                    return false;
+                }
+
+                return true;
+            }
         }
     }
-}
