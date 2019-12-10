@@ -105,6 +105,6 @@ namespace AttendanceJournal
             return row;
         }
     }
-
    
+
 }

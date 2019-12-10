@@ -252,7 +252,7 @@ namespace AttendanceJournal
                             Phone = reader.GetInt32(reader.GetOrdinal("Phone")),
                             Head = reader.GetBoolean(reader.GetOrdinal("Head"))
 
-                        });
+                        }); ;
                     }
                 }
                 con.Close();
@@ -260,6 +260,7 @@ namespace AttendanceJournal
 
             return listRes;
         }
+
         public static List<Students> GetListOfStudents()
         {
             List<Students> listRes = new List<Students>();
@@ -323,6 +324,36 @@ namespace AttendanceJournal
                 con.Close();
             }
             return res;
+        }
+
+        public static List<Mark> GetListOfCountMarksByStudentID(List<Students> students)
+        {
+            List<Mark> res = new List<Mark>();
+            for (int i = 0; i < students.Count; i++)
+            {
+                using (var con = GetNewConnection())
+                {
+                    con.Open();
+                    MySqlCommand cmd = new MySqlCommand(
+                               "SELECT COUNT(Mark)" +
+                               "FROM JournalDB.Journal " +
+                               $"WHERE Mark='0' AND StudentID='{students[i].ID}'",
+                               con);
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        reader.Read();
+                        res.Add(new Mark
+                            {
+                                mark = reader.GetInt32(0)
+
+                            });
+                    }
+                    con.Close();
+                }
+            }
+            return res;
+
+
         }
         public static int GetGroupIDByCorseAndNumber(int course, int groupNumber)
         {

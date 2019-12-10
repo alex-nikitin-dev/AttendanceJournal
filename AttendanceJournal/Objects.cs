@@ -98,6 +98,7 @@ namespace AttendanceJournal
             set;
         }
     }
+
     public class Entry
     {
         public DateTime EntryDate
@@ -132,9 +133,16 @@ namespace AttendanceJournal
         }
         public bool Mark
         {
+          get;
+          set;
+        }
+    }
+    public class Mark
+    {
+        public int mark
+        {
             get;
             set;
         }
     }
-
 }
