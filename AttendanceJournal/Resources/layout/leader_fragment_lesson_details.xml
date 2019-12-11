@@ -21,11 +21,12 @@
         <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Lesson number"/>
+        android:text="Lesson number: "/>
 
         <TextView
             android:id="@+id/tv_leader_lesson_number"
             android:inputType="number"
+            android:textStyle="bold"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
     </LinearLayout>
@@ -39,7 +40,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center_vertical"
-        android:text="Date"/>
+        android:text="Date: "/>
 
         <TextView
             android:id="@+id/tv_leader_lesson_date"
@@ -55,31 +56,15 @@
         android:orientation="horizontal">
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:text="Week number"/>
-
-        <TextView
-            android:id="@+id/tv_leader_lesson_week"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-    </LinearLayout>
-    
-    <LinearLayout 
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingVertical="8dp"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center_vertical"
-            android:text="Subject"/>
+            android:text="Subject: "/>
 
         <TextView
             android:id="@+id/tv_leader_lesson_subject"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:textStyle="bold"/>
     </LinearLayout>
     
     <LinearLayout 
@@ -91,12 +76,13 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center_vertical"
-            android:text="Professor"/>
+            android:text="Professor: "/>
 
         <TextView
             android:id="@+id/tv_leader_lesson_professor"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:textStyle="bold"/>
     </LinearLayout>
     
     <LinearLayout 
@@ -107,11 +93,12 @@
         <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Room"/>
+        android:text="Room: "/>
 
         <TextView
             android:id="@+id/tv_leader_lesson_room"
             android:inputType="number"
+            android:textStyle="bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
     </LinearLayout>

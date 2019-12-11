@@ -71,8 +71,10 @@
     <Compile Include="LeaderDayFragment.cs" />
     <Compile Include="LeaderLessonDetailsFragment.cs" />
     <Compile Include="LeaderProfessorsFragment.cs" />
+    <Compile Include="LeaderSemesterFragment.cs" />
     <Compile Include="LeaderStudentsFragment.cs" />
     <Compile Include="LeaderSubjectsFragment.cs" />
+    <Compile Include="LeaderWeekFragment.cs" />
     <Compile Include="LoginActivity.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="Objects.cs" />
@@ -374,7 +376,7 @@
     </AndroidResource>
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\layout\leader_list_item_entry_editable.xml">
+    <AndroidResource Include="Resources\layout\leader_list_item_entry_readonly.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>
@@ -400,6 +402,11 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\leader_fragment_lesson_details.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\leader_fragment_semester.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>

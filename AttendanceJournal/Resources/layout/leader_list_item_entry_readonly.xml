@@ -6,17 +6,17 @@
     android:padding="16dp">
 
     <TextView
-        android:id="@+id/tv_leader_entry_name_editable"
+        android:id="@+id/tv_leader_entry_name_readonly"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="0.1"
         android:text="name" />
 
     <CheckBox
-        android:id="@+id/cb_leader_entry_mark_editable"
+        android:id="@+id/tv_leader_entry_mark_readonly"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:editable="false"
+        android:clickable="false"
         android:textAlignment="textEnd" />
 </LinearLayout>

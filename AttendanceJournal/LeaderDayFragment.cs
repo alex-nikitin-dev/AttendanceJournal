@@ -100,9 +100,14 @@ namespace AttendanceJournal
         }
         private void FabOnClick(object sender, EventArgs eventArgs)
         {
+            Bundle bundle = new Bundle();
+            bundle.PutInt("UserID", UserID);
+            bundle.PutString("Date", date.ToString());
+            Android.Support.V4.App.Fragment fragment = new LeaderAddEntryFragment();
+            fragment.Arguments = bundle;
             FragmentManager.BeginTransaction()
-                              .Replace(Resource.Id.content_frame, new LeaderAddEntryFragment())
-                              .Commit();
+                          .Replace(Resource.Id.content_frame, fragment)
+                          .Commit();
         }
         public override void OnCreateOptionsMenu(IMenu menu, MenuInflater inflater)
         {
@@ -117,6 +122,7 @@ namespace AttendanceJournal
                 bundle.PutInt("UserID", UserID);
                 bundle.PutString("Date", date.ToString());
                 Android.Support.V4.App.Fragment fragment = new LeaderDayDetailsFragment();
+                fragment.Arguments = bundle;
                 FragmentManager.BeginTransaction()
                               .Replace(Resource.Id.content_frame, fragment)
                               .Commit();

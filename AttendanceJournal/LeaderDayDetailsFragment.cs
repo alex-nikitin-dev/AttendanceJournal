@@ -62,8 +62,9 @@ namespace AttendanceJournal
                 Bundle bundle = new Bundle();
                 bundle.PutInt("UserID", UserID);
                 bundle.PutInt("NumberOfLesson", entries[p].NumberOfLesson);
-                bundle.PutString("Date", entries[p].EntryDate.ToString());
+                bundle.PutString("Date", date.ToString());
                 Android.Support.V4.App.Fragment fragment = new LeaderLessonDetailsFragment();
+                fragment.Arguments = bundle;
                 FragmentManager.BeginTransaction()
                               .Replace(Resource.Id.content_frame, fragment)
                               .Commit();
@@ -114,8 +115,7 @@ namespace AttendanceJournal
                 TextView tvSubject = view.FindViewById<TextView>(Resource.Id.tv_leader_entry_detail_subject);
                 tvSubject.Text = entries[position].Subject.nameofSubject;
                 TextView tvProfessor = view.FindViewById<TextView>(Resource.Id.tv_leader_entry_detail_professor);
-                //tvProfessor.Text = entries[position].Professor.nameOfProfessor;
-                tvProfessor.Text = entries[position].EntryDate.ToString("dd.MM.yyyy");
+                tvProfessor.Text = entries[position].Professor.nameOfProfessor;
                 TextView tvRoom = view.FindViewById<TextView>(Resource.Id.tv_leader_entry_detail_room);
                 tvRoom.Text = "room " + entries[position].Room.ToString();
             }

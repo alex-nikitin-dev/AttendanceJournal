@@ -59,7 +59,12 @@ namespace AttendanceJournal
             get;
             set;
         }
-
+        public int entryYear
+        {
+            get;
+            set;
+        }
+        
     }
     public class Subject
     {

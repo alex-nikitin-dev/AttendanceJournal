@@ -21,14 +21,12 @@ namespace AttendanceJournal
         private ListView lvEntry;
         private Spinner spSubject;
         private Spinner spProfessor;
-        private Spinner spWeek;
         private TextView tvDate;
         private EditText etNumbOfLesson;
         private EditText etRoom;
 
         private List<Subject> subjects;
         private List<Professor> professors;
-        private List<int> weeks;
 
         private List<String> subjectsNames;
         private List<String> professorsNames;
@@ -54,22 +52,29 @@ namespace AttendanceJournal
             etNumbOfLesson = root.FindViewById<EditText>(Resource.Id.et_leader_add_entry_lesson);
             etRoom = root.FindViewById<EditText>(Resource.Id.et_leader_add_entry_room);
             spSubject = root.FindViewById<Spinner>(Resource.Id.sp_leader_add_entry_subject);
-            spWeek = root.FindViewById<Spinner>(Resource.Id.sp_leader_add_entry_week);
             spProfessor = root.FindViewById<Spinner>(Resource.Id.sp_leader_add_entry_professor);
             context = root.Context;
 
-            if (Arguments != null && Arguments.ContainsKey("UserID"))
+            if (Arguments != null)
             {
-                UserID = Arguments.GetInt("UserID");
-                user = DataBaseHelper.GetStudentByUserID(UserID);
+                if (Arguments.ContainsKey("UserID"))
+                {
+                    UserID = Arguments.GetInt("UserID");
+                    user = DataBaseHelper.GetStudentByUserID(UserID);
+                }
+                if (Arguments.ContainsKey("Date"))
+                {
+                    date = DateTime.Parse(Arguments.GetString("Date"));
+                }
             }
+
             //userGroupID = user.Group.ID;
             userGroupID = 2;
 
-            date = DateTime.Today;
             tvDate.Text = date.ToShortDateString();
             tvDate.Click += (sender, e) => {
                 DatePickerDialog dialog = new DatePickerDialog(root.Context, OnDateSet, date.Year, date.Month-1, date.Day);
+                //dialog.DatePicker.MaxDate = DateTime.Today.Millisecond;
                 dialog.Show();
             };
 
@@ -110,19 +115,12 @@ namespace AttendanceJournal
             foreach (Professor p in professors)
                 professorsNames.Add(p.nameOfProfessor);
 
-            weeks = new List<int>();
-            for (int i = 1; i < 16; i++)
-                weeks.Add(i);
-
             ArrayAdapter subjectAdapter = new ArrayAdapter<String>(root.Context, Android.Resource.Layout.SimpleSpinnerItem, subjectsNames);
             subjectAdapter.SetDropDownViewResource(Android.Resource.Layout.SimpleSpinnerDropDownItem);
             spSubject.Adapter = subjectAdapter;
             ArrayAdapter professorAdapter = new ArrayAdapter<String>(root.Context, Android.Resource.Layout.SimpleSpinnerItem, professorsNames);
             professorAdapter.SetDropDownViewResource(Android.Resource.Layout.SimpleSpinnerDropDownItem);
             spProfessor.Adapter = professorAdapter;
-            ArrayAdapter weekAdapter = new ArrayAdapter<int>(root.Context, Android.Resource.Layout.SimpleSpinnerItem, weeks);
-            weekAdapter.SetDropDownViewResource(Android.Resource.Layout.SimpleSpinnerDropDownItem);
-            spWeek.Adapter = weekAdapter;
 
 
             return root;
@@ -155,6 +153,12 @@ namespace AttendanceJournal
                 return;
             }
 
+            if (DataBaseHelper.ContainsEntry(userGroupID, Int32.Parse(etNumbOfLesson.Text), date))
+            {
+                Toast.MakeText(context, "Entry with this lesson number already exists", ToastLength.Long).Show();
+                return;
+            }
+
             SparseBooleanArray sbArray = lvEntry.CheckedItemPositions;
             int i = 0;
             foreach (Entry entry in entries){
@@ -167,7 +171,7 @@ namespace AttendanceJournal
                     entry.Mark = 1;
                 DataBaseHelper.AddNewEntry(entry);
                 i++;
-                System.Diagnostics.Debug.WriteLine(entry.Student.Name + " " + entry.Mark);
+                //System.Diagnostics.Debug.WriteLine(entry.Student.Name + " " + entry.Mark);
             }
 
             Toast.MakeText(context, "New entry saved successfully", ToastLength.Long).Show();
