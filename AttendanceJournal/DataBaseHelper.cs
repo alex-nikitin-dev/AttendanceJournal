@@ -93,7 +93,7 @@ namespace AttendanceJournal
                 MySqlCommand cmd = new MySqlCommand(
                            "SELECT * " +
                            "FROM JournalDB.Subject " +
-                           $"WHERE ID='{Id}';",
+                           $"WHERE ID='{id}';",
                            con);
                 using (var reader = cmd.ExecuteReader())
                 {
@@ -176,7 +176,7 @@ namespace AttendanceJournal
             {
                 con.Open();
                 MySqlCommand cmd = new MySqlCommand(
-                           "SELECT ID, Course, NumberOfGroup " +
+                           "SELECT * " +
                            "FROM JournalDB.GroupOfStudents ",
                            con);
                 using (var reader = cmd.ExecuteReader())
@@ -188,7 +188,8 @@ namespace AttendanceJournal
                         {
                             ID = reader.GetInt32(reader.GetOrdinal("ID")),
                             course = (int)reader.GetUInt32(reader.GetOrdinal("Course")),
-                            group = (int)reader.GetInt32(reader.GetOrdinal("NumberOfGroup"))
+                            entryYear = (int)reader.GetUInt32(reader.GetOrdinal("EntryYear")),
+                            group = (int)reader.GetInt32(reader.GetOrdinal("numberOfGroup"))
                         });
                     }
                 }
@@ -206,7 +207,7 @@ namespace AttendanceJournal
                 MySqlCommand cmd = new MySqlCommand(
                            "SELECT * " +
                            "FROM JournalDB.GroupOfStudents " +
-                           $"WHERE ID='{Id}';",
+                           $"WHERE ID='{id}';",
                            con);
                 using (var reader = cmd.ExecuteReader())
                 {
@@ -235,7 +236,7 @@ namespace AttendanceJournal
             {
                 con.Open();
                 MySqlCommand cmd = new MySqlCommand(
-                           "SELECT ID, NameOfStudent, GroupID, Phone, Head " +
+                           "SELECT * " +
                            "FROM JournalDB.Student " +
                            $"WHERE GroupID='{groupID}'",
                            con);
@@ -248,7 +249,7 @@ namespace AttendanceJournal
                         {
                             ID = reader.GetInt32(reader.GetOrdinal("ID")),
                             Name = reader.GetString(reader.GetOrdinal("NameOfStudent")),
-                            Group = reader.GetInt32(reader.GetOrdinal("GroupID")),
+                            Group = GetGroupByID(reader.GetInt32(reader.GetOrdinal("GroupID"))),
                             Phone = reader.GetInt32(reader.GetOrdinal("Phone")),
                             Head = reader.GetBoolean(reader.GetOrdinal("Head"))
 
@@ -268,7 +269,7 @@ namespace AttendanceJournal
             {
                 con.Open();
                 MySqlCommand cmd = new MySqlCommand(
-                           "SELECT ID, NameOfStudent, GroupID, Phone, Head " +
+                           "SELECT * " +
                            "FROM JournalDB.Student ",
                            con);
                 using (var reader = cmd.ExecuteReader())
@@ -280,7 +281,7 @@ namespace AttendanceJournal
                         {
                             ID = reader.GetInt32(reader.GetOrdinal("ID")),
                             Name = reader.GetString(reader.GetOrdinal("NameOfStudent")),
-                            Group = reader.GetInt32(reader.GetOrdinal("GroupID")),
+                            Group = GetGroupByID(reader.GetInt32(reader.GetOrdinal("GroupID"))),
                             Phone = reader.GetInt32(reader.GetOrdinal("Phone")),
                             Head = reader.GetBoolean(reader.GetOrdinal("Head"))
 
@@ -301,7 +302,7 @@ namespace AttendanceJournal
                 MySqlCommand cmd = new MySqlCommand(
                            "SELECT * " +
                            "FROM JournalDB.Student " +
-                           $"WHERE ID='{Id}';",
+                           $"WHERE ID='{id}';",
                            con);
                 using (var reader = cmd.ExecuteReader())
                 {
@@ -309,13 +310,13 @@ namespace AttendanceJournal
                     {
                         if (i > 0)
                         {
-                            throw new Exception("database error: Subject is not unique");
+                            throw new Exception("database error: Student is not unique");
                         }
                         res = new Students
                         {
                             ID = id,
                             Name = reader.GetString(reader.GetOrdinal("NameOfStudent")),
-                            Group = GetGroupByID(reader.GetInt32(reader.GetOrdinal("GroupID"))).group,
+                            Group = GetGroupByID(reader.GetInt32(reader.GetOrdinal("GroupID"))),
                             Phone = reader.GetInt32(reader.GetOrdinal("Phone")),
                             Head = reader.GetBoolean(reader.GetOrdinal("Head"))
                         };
@@ -352,6 +353,7 @@ namespace AttendanceJournal
                 }
                 return res;
             }
+      
             public static int GetGroupIDByCorseAndNumber(int course, int groupNumber)
             {
                 int result = -1;
@@ -381,6 +383,7 @@ namespace AttendanceJournal
                 return result;
 
             }
+      
             public static int GetGroupIDByNumberAndYear(int group, int year)
             {
                 int result = -1;
@@ -408,7 +411,6 @@ namespace AttendanceJournal
                 }
 
                 return result;
-
             }
 
             public static Professor GetProfessorByID(int id)
@@ -443,6 +445,7 @@ namespace AttendanceJournal
                 }
                 return res;
             }
+      
             public static List<Professor> GetListOfProfessors()
             {
                 List<Professor> res = new List<Professor>();
@@ -471,6 +474,7 @@ namespace AttendanceJournal
 
                 return res;
             }
+  
             public static void AddNewProfessor(string name, int phone, int room)
             {
                 using (var con = GetNewConnection())
@@ -483,8 +487,84 @@ namespace AttendanceJournal
                     con.Close();
                 }
             }
-            public static List<Entry> GetListOfDayEntriesByGroupIDAndDate(int id, DateTime date)
+       
+        public static int GetMarksByIDAndDate(int id, DateTime dateFrom, DateTime dateTo)
+        {
+            int res = 0;
+            using (var con = GetNewConnection())
             {
+                con.Open();
+                MySqlCommand cmd = new MySqlCommand(
+                           "SELECT Count(Mark) as cnt " +
+                           "FROM JournalDB.Journal " +
+                           "WHERE StudentID = " + id + " " +
+                           "AND Mark = '1' " +
+                           "AND EntryDate BETWEEN '" + dateFrom.ToString("dd.MM.yyyy") + "' AND '" + dateTo.ToString("dd.MM.yyyy") + "' ",
+                           con);
+                using (var reader = cmd.ExecuteReader())
+                {
+                    for (int i = 0; reader.Read(); i++)
+                    {
+                        res = reader.GetInt32(reader.GetOrdinal("cnt"));
+                    }
+                }
+                con.Close();
+            }
+            return res;
+        }
+      
+        public static List<Entry> GetListOfDayEntriesByGroupIDAndDate(int id, DateTime date)
+        {
+            List<Entry> res = new List<Entry>();
+            using (var con = GetNewConnection())
+            {
+                con.Open();
+                MySqlCommand cmd = new MySqlCommand(
+                           "SELECT StudentID, COUNT(Mark) as cnt, EntryDate " +
+                           "FROM JournalDB.Journal INNER JOIN JournalDB.Student " +
+                           "ON JournalDB.Journal.StudentID = JournalDB.Student.ID " +
+                           "AND JournalDB.Student.GroupID = " + id + " " +
+                           "AND Mark = '" + 1 + "' " +
+                           "AND JournalDB.Journal.EntryDate = STR_TO_DATE('" + date.ToString("dd.MM.yyyy") + "', '%d.%m.%Y') " +
+                           "GROUP BY StudentID, EntryDate ",
+                           con);
+                using (var reader = cmd.ExecuteReader())
+                {
+                    for (int i = 0; reader.Read(); i++)
+                    {
+                        //System.Diagnostics.Debug.WriteLine(reader.GetDateTime(reader.GetOrdinal("EntryDate")).Date.ToString("dd.MM.yyyy"));
+                        res.Add(new Entry
+                        {
+                            Student = GetStudentByID(reader.GetInt32(reader.GetOrdinal("StudentID"))),
+                            Mark = reader.GetInt32(reader.GetOrdinal("cnt"))
+                        }); ;
+                    }
+                }
+                con.Close();
+            }
+            return res;
+        }
+      
+        public static List<Entry> GetListOfDayDelailEntriesByGroupIDAndDate(int id, DateTime date)
+        {
+            List<Entry> res = new List<Entry>();
+            using (var con = GetNewConnection())
+            {
+                con.Open();
+                MySqlCommand cmd = new MySqlCommand(
+                           "SELECT NumberOfLesson, Room, SubjectId, ProfessorId, EntryDate " +
+                           "FROM JournalDB.Journal INNER JOIN JournalDB.Student " +
+                           "ON JournalDB.Journal.StudentID = JournalDB.Student.ID " +
+                           "AND JournalDB.Student.GroupID = " + id + " " +
+                           "AND JournalDB.Journal.EntryDate = STR_TO_DATE('" + date.ToString("dd.MM.yyyy") + "', '%d.%m.%Y') " +
+                           "GROUP BY NumberOfLesson, Room, SubjectId, ProfessorId, EntryDate ",
+                           con);
+                using (var reader = cmd.ExecuteReader())
+            }
+        }
+
+        public static List<Entry> GetListOfDayEntriesByGroupIDAndDate(int id, DateTime date)
+        {
                 List<Entry> res = new List<Entry>();
                 using (var con = GetNewConnection())
                 {
@@ -497,6 +577,38 @@ namespace AttendanceJournal
                     {
                         for (int i = 0; reader.Read(); i++)
                         {
+                                res.Add(new Entry
+                            {     
+                            NumberOfLesson = reader.GetInt32(reader.GetOrdinal("NumberOfLesson")),
+                            Room = reader.GetInt32(reader.GetOrdinal("Room")),
+                            Professor = GetProfessorByID(reader.GetInt32(reader.GetOrdinal("ProfessorID"))),
+                            Subject = GetSubgectByID(reader.GetInt32(reader.GetOrdinal("SubjectID")))
+                            }); ;
+                        }
+                    }
+                con.Close();
+               }
+            return res;
+        }
+      
+        public static List<Entry> GetListOfLessonDelailEntriesByLessonNumbAndDate(int id, int numberOfLesson, DateTime date)
+        {
+            List<Entry> res = new List<Entry>();
+            using (var con = GetNewConnection())
+            {
+                con.Open();
+                MySqlCommand cmd = new MySqlCommand(
+                           "SELECT StudentID, Mark " +
+                           "FROM JournalDB.Journal INNER JOIN JournalDB.Student " +
+                           "ON JournalDB.Journal.StudentID = JournalDB.Student.ID " +
+                           "AND JournalDB.Student.GroupID = " + id + " " +
+                           "AND JournalDB.Journal.NumberOfLesson = " + numberOfLesson + " " +
+                           "AND JournalDB.Journal.EntryDate = STR_TO_DATE('" + date.ToString("dd.MM.yyyy") + "', '%d.%m.%Y') ",
+                           con);
+                using (var reader = cmd.ExecuteReader())
+                {
+                    for (int i = 0; reader.Read(); i++)
+                    {
                             res.Add(new Entry
                             {
                                 EntryDate = reader.GetDateTime(reader.GetOrdinal("EntryDate")),
@@ -507,12 +619,158 @@ namespace AttendanceJournal
                                 Student = GetStudentByID(reader.GetInt32(reader.GetOrdinal("StudentID"))),
                                 Mark = reader.GetBoolean(reader.GetOrdinal("Mark"))
                             }); ;
+                     }
+                 }
+                    con.Close();
+             }
+            return res;
+        }
+      
+        public static Entry GetEntryDetailsByLessonNumbAndDate(int id, int numberOfLesson, DateTime date)
+        {
+            Entry res = new Entry();
+            using (var con = GetNewConnection())
+            {
+                con.Open();
+                MySqlCommand cmd = new MySqlCommand(
+                           "SELECT ProfessorID, SubjectID, Room " +
+                           "FROM JournalDB.Journal INNER JOIN JournalDB.Student " +
+                           "ON JournalDB.Journal.StudentID = JournalDB.Student.ID " +
+                           "AND JournalDB.Student.GroupID = " + id + " " +
+                           "AND JournalDB.Journal.NumberOfLesson = " + numberOfLesson + " " +
+                           "AND JournalDB.Journal.EntryDate = STR_TO_DATE('" + date.ToString("dd.MM.yyyy") + "', '%d.%m.%Y') ",
+                           con);
+                using (var reader = cmd.ExecuteReader())
+                {
+                    for (int i = 0; reader.Read(); i++)
+                    {
+                        res = new Entry
+                        {
+                            NumberOfLesson = numberOfLesson,
+                            EntryDate = date,
+                            Room = reader.GetInt32(reader.GetOrdinal("Room")),
+                            Professor = GetProfessorByID(reader.GetInt32(reader.GetOrdinal("ProfessorID"))),
+                            Subject = GetSubgectByID(reader.GetInt32(reader.GetOrdinal("SubjectID")))
+                        };
+                    }
+                }
+                con.Close();
+            }
+            return res;
+        }
+      
+        public static bool ContainsEntry(int id, int numberOfLesson, DateTime date)
+        {
+            using (var con = GetNewConnection())
+            {
+                con.Open();
+                MySqlCommand cmd = new MySqlCommand(
+                           "SELECT NumberOfLesson, Room, SubjectId, ProfessorId, EntryDate " +
+                           "FROM JournalDB.Journal INNER JOIN JournalDB.Student " +
+                           "ON JournalDB.Journal.StudentID = JournalDB.Student.ID " +
+                           "AND JournalDB.Student.GroupID = " + id + " " +
+                           "AND JournalDB.Journal.NumberOfLesson = " + numberOfLesson + " " +
+                           "AND JournalDB.Journal.EntryDate = STR_TO_DATE('" + date.ToString("dd.MM.yyyy") + "', '%d.%m.%Y') ",
+                           con);
+                using (var reader = cmd.ExecuteReader())
+                {
+                    for (int i = 0; reader.Read(); i++)
+                    {
+                        if (i == 0)
+                        {
+                            return true;
                         }
                     }
-                    con.Close();
                 }
-                return res;
+                con.Close();
             }
+            return false;
+        }
+      
+        public static int GetSemesterByGroupIDAndDate(int id, DateTime date)
+        {
+            Group group = GetGroupByID(id);
+            if (date.Year > group.entryYear + group.course || date.Year < group.entryYear)
+                return -1;
+            if (group.entryYear + group.course == date.Year && date.Month > 8)
+                return -1;
+            if (group.entryYear + group.course - 1 == date.Year)
+                return 1;
+            else
+                return 2;
+        }
+      
+        public static int GetWeekNumberByGroupIDAndDate(int id, DateTime date)
+        {
+            Group group = GetGroupByID(id);
+            int semester = GetSemesterByGroupIDAndDate(id, date);
+            if(semester == 1)
+            {
+                DateTime start = new DateTime(date.Year, 9, 1);
+                if (date >= start && date <= new DateTime(date.Year + 1, 1, 1))
+                {
+                    return date.Subtract(start).Days / 7 + 1;
+                }
+            }
+            if (semester == 2)
+            {
+                DateTime start = new DateTime(date.Year, 1, 1);
+                if (date >= start && date <= new DateTime(date.Year, 7, 1))
+                {
+                    return date.Subtract(start).Days / 7 + 1;
+                }
+            }
+            return -1;
+        }
+
+        public static void AddNewEntry(Entry entry)
+        {
+            using (var con = GetNewConnection())
+            {
+                con.Open();
+                MySqlCommand cmd = new MySqlCommand(
+                           "INSERT INTO JournalDB.Journal(EntryDate, NumberOfLesson, Room, ProfessorID, SubjectID, StudentID, Mark) " +
+                           $"VALUES(STR_TO_DATE('{entry.EntryDate.ToString("dd.MM.yyyy")}', '%d.%m.%Y'), '{entry.NumberOfLesson}', '{entry.Room}', '{entry.Professor.ID}', '{entry.Subject.ID}', '{entry.Student.ID}', '{entry.Mark}');", con);
+
+                cmd.ExecuteNonQuery();
+                con.Close();
+            }
+        }
+
+        public static Students GetStudentByUserID(int id)
+        {
+            Students res = null;
+            using (var con = GetNewConnection())
+            {
+                con.Open();
+                MySqlCommand cmd = new MySqlCommand(
+                           "SELECT * " +
+                           "FROM JournalDB.Student " +
+                           $"WHERE UserID='{id}';",
+                           con);
+                using (var reader = cmd.ExecuteReader())
+                {
+                    for (int i = 0; reader.Read(); i++)
+                    {
+                        if (i > 0)
+                        {
+                            throw new Exception("database error: Subject is not unique");
+                        }
+                        res = new Students
+                        {
+                            ID = id,
+                            Name = reader.GetString(reader.GetOrdinal("NameOfStudent")),
+                            Group = GetGroupByID(reader.GetInt32(reader.GetOrdinal("GroupID"))),
+                            Phone = reader.GetInt32(reader.GetOrdinal("Phone")),
+                            Head = reader.GetBoolean(reader.GetOrdinal("Head"))
+                        };
+                    }
+                }
+                con.Close();
+            }
+            return res;
+        }
+      
             public static void AddNewEntry(Entry entry)
             {
                 using (var con = GetNewConnection())
@@ -526,6 +784,7 @@ namespace AttendanceJournal
                 }
 
             }
+      
             public static string GetUserPwdHash(string login)
             {
                 string result = string.Empty;

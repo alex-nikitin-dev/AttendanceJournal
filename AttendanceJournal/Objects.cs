@@ -25,7 +25,7 @@ namespace AttendanceJournal
             get;
             set;
         }
-        public int Group
+        public Group Group
         {
             get;
             set;
@@ -59,7 +59,12 @@ namespace AttendanceJournal
             get;
             set;
         }
-
+        public int entryYear
+        {
+            get;
+            set;
+        }
+        
     }
     public class Subject
     {
@@ -131,7 +136,7 @@ namespace AttendanceJournal
             get;
             set;
         }
-        public bool Mark
+        public int Mark
         {
           get;
           set;

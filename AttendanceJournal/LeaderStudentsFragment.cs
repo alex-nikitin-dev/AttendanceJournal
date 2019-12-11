@@ -16,6 +16,8 @@ namespace AttendanceJournal
 {
     public class LeaderStudentsFragment : Android.Support.V4.App.Fragment
     {
+        private int UserID;
+        private Students user;
         private ListView lvStudents;
         private List<Students> StudentsList;
         LeadStudentsAdapter stAdapter;
@@ -29,12 +31,17 @@ namespace AttendanceJournal
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
             View root = inflater.Inflate(Resource.Layout.leader_fragment_students, container, false);
-
             lvStudents = root.FindViewById<ListView>(Resource.Id.lv_leader_students);
+
+            if (Arguments != null && Arguments.ContainsKey("UserID"))
+            {
+                UserID = Arguments.GetInt("UserID");
+                user = DataBaseHelper.GetStudentByUserID(UserID);
+            }
 
             StudentsList = new List<Students>();
             //todo change to user group id
-            StudentsList = DataBaseHelper.GetListOfStudentsByGroupID(0);
+            StudentsList = DataBaseHelper.GetListOfStudentsByGroupID(2);
             //StudentsList.Add(new Students { Group = 0, Name = "Студент 1", Phone = 380666, Head=false });
             //StudentsList.Add(new Students { Group = 0, Name = "Студент 2", Phone = 380111, Head = false });
 
@@ -85,7 +92,7 @@ namespace AttendanceJournal
                 TextView tvName = view.FindViewById<TextView>(Resource.Id.tv_leader_students_name);
                 tvName.Text = students[position].Name;
                 TextView tvPhone = view.FindViewById<TextView>(Resource.Id.tv_leader_students_phone);
-                tvPhone.Text = students[position].Phone.ToString();
+                tvPhone.Text = students[position].Group.ID.ToString();
             }
             catch (Exception ex)
             {
