@@ -37,6 +37,7 @@
     <AndroidUseSharedRuntime>True</AndroidUseSharedRuntime>
     <AndroidLinkMode>None</AndroidLinkMode>
     <EmbedAssembliesIntoApk>False</EmbedAssembliesIntoApk>
+    <MandroidI18n />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugSymbols>True</DebugSymbols>
@@ -385,31 +386,47 @@
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>
-  <ItemGroup>
+   <ItemGroup>
     <AndroidResource Include="Resources\layout\leader_fragment_day_details.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>
   <ItemGroup>
+    <AndroidResource Include="Resources\layout\dean_content_list_journal_student.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+    
+  <ItemGroup>
     <AndroidResource Include="Resources\layout\leader_list_item_entry_details.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>
+  
   <ItemGroup>
     <AndroidResource Include="Resources\menu\item_details.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>
+  
   <ItemGroup>
     <AndroidResource Include="Resources\layout\leader_fragment_lesson_details.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>
+  
+   <ItemGroup>
+    <AndroidResource Include="Resources\layout\dean_view_journal_student.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  
   <ItemGroup>
     <AndroidResource Include="Resources\layout\leader_fragment_semester.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>
+    
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
     Other similar extension points exist, see Microsoft.Common.targets.

@@ -40,10 +40,8 @@ namespace AttendanceJournal
         }
         private void GrouplistView_ItemClick(object sender, AdapterView.ItemClickEventArgs e)
         {
-            SetContentView(Resource.Layout.dean_view_student);
-            FloatingActionButton fabAddStd = FindViewById<FloatingActionButton>(Resource.Id.fab_add_student);
-            fabAddStd.Hide();
-            studentlistView = FindViewById<ListView>(Resource.Id.demolist);
+            SetContentView(Resource.Layout.dean_view_journal_student);
+            studentlistView = FindViewById<ListView>(Resource.Id.j_demolist);
             studentList = new List<Students>();
             var selectcorse = grouplist[e.Position].course;
             var selectgroup = grouplist[e.Position].group;
@@ -97,10 +95,10 @@ namespace AttendanceJournal
             {
                 if (row == null)
                 {
-                    row = LayoutInflater.From(sContext).Inflate(Resource.Layout.dean_content_list_student, null, false);
+                    row = LayoutInflater.From(sContext).Inflate(Resource.Layout.dean_content_list_journal_student, null, false);
                 }
-                TextView txtName = row.FindViewById<TextView>(Resource.Id.Name);
-                TextView txtMark = row.FindViewById<TextView>(Resource.Id.Mark);
+                TextView txtName = row.FindViewById<TextView>(Resource.Id.j_Name);
+                TextView txtMark = row.FindViewById<TextView>(Resource.Id.j_Mark);
                 txtName.Text = sList[position].Name;
                 txtMark.Text = "count = "+mList[position].mark.ToString();
             }
