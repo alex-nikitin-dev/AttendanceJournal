@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 
@@ -161,6 +162,7 @@ namespace AttendanceJournal
 
             SparseBooleanArray sbArray = lvEntry.CheckedItemPositions;
             int i = 0;
+            CultureInfo provider = CultureInfo.InvariantCulture;
             foreach (Entry entry in entries){
                 entry.EntryDate = DateTime.Parse(tvDate.Text);
                 entry.NumberOfLesson = Int32.Parse(etNumbOfLesson.Text);

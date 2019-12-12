@@ -40,7 +40,7 @@
     <MandroidI18n />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugSymbols>True</DebugSymbols>
+    <DebugSymbols>false</DebugSymbols>
     <DebugType>portable</DebugType>
     <Optimize>True</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -50,7 +50,12 @@
     <AndroidManagedSymbols>true</AndroidManagedSymbols>
     <AndroidUseSharedRuntime>False</AndroidUseSharedRuntime>
     <AndroidLinkMode>SdkOnly</AndroidLinkMode>
-    <EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
+    <EmbedAssembliesIntoApk>true</EmbedAssembliesIntoApk>
+    <AndroidKeyStore>false</AndroidKeyStore>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <AndroidSupportedAbis>x86;arm64-v8a</AndroidSupportedAbis>
+    <AndroidCreatePackagePerAbi>true</AndroidCreatePackagePerAbi>
+    <AndroidPackageFormat>apk</AndroidPackageFormat>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -386,7 +391,7 @@
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>
-   <ItemGroup>
+  <ItemGroup>
     <AndroidResource Include="Resources\layout\leader_fragment_day_details.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
@@ -396,37 +401,31 @@
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>
-    
   <ItemGroup>
     <AndroidResource Include="Resources\layout\leader_list_item_entry_details.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>
-  
   <ItemGroup>
     <AndroidResource Include="Resources\menu\item_details.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>
-  
   <ItemGroup>
     <AndroidResource Include="Resources\layout\leader_fragment_lesson_details.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>
-  
-   <ItemGroup>
+  <ItemGroup>
     <AndroidResource Include="Resources\layout\dean_view_journal_student.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>
-  
   <ItemGroup>
     <AndroidResource Include="Resources\layout\leader_fragment_semester.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>
-    
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
     Other similar extension points exist, see Microsoft.Common.targets.

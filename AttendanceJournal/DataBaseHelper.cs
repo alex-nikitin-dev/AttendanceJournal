@@ -559,20 +559,6 @@ namespace AttendanceJournal
                            "AND JournalDB.Journal.EntryDate = STR_TO_DATE('" + date.ToString("dd.MM.yyyy") + "', '%d.%m.%Y') " +
                            "GROUP BY NumberOfLesson, Room, SubjectId, ProfessorId, EntryDate ",
                            con);
-                using (var reader = cmd.ExecuteReader())
-            }
-        }
-
-        public static List<Entry> GetListOfDayEntriesByGroupIDAndDate(int id, DateTime date)
-        {
-                List<Entry> res = new List<Entry>();
-                using (var con = GetNewConnection())
-                {
-                    con.Open();
-                    MySqlCommand cmd = new MySqlCommand(
-                               "SELECT * " +
-                               "FROM JournalDB.Journal ",
-                               con);
                     using (var reader = cmd.ExecuteReader())
                     {
                         for (int i = 0; reader.Read(); i++)
@@ -617,7 +603,7 @@ namespace AttendanceJournal
                                 Professor = GetProfessorByID(reader.GetInt32(reader.GetOrdinal("ProfessorID"))),
                                 Subject = GetSubgectByID(reader.GetInt32(reader.GetOrdinal("SubjectID"))),
                                 Student = GetStudentByID(reader.GetInt32(reader.GetOrdinal("StudentID"))),
-                                Mark = reader.GetBoolean(reader.GetOrdinal("Mark"))
+                                Mark = int.Parse(reader.GetBoolean(reader.GetOrdinal("Mark")).ToString())
                             }); ;
                      }
                  }
@@ -723,20 +709,6 @@ namespace AttendanceJournal
             return -1;
         }
 
-        public static void AddNewEntry(Entry entry)
-        {
-            using (var con = GetNewConnection())
-            {
-                con.Open();
-                MySqlCommand cmd = new MySqlCommand(
-                           "INSERT INTO JournalDB.Journal(EntryDate, NumberOfLesson, Room, ProfessorID, SubjectID, StudentID, Mark) " +
-                           $"VALUES(STR_TO_DATE('{entry.EntryDate.ToString("dd.MM.yyyy")}', '%d.%m.%Y'), '{entry.NumberOfLesson}', '{entry.Room}', '{entry.Professor.ID}', '{entry.Subject.ID}', '{entry.Student.ID}', '{entry.Mark}');", con);
-
-                cmd.ExecuteNonQuery();
-                con.Close();
-            }
-        }
-
         public static Students GetStudentByUserID(int id)
         {
             Students res = null;
@@ -776,9 +748,10 @@ namespace AttendanceJournal
                 using (var con = GetNewConnection())
                 {
                     con.Open();
-                    MySqlCommand cmd = new MySqlCommand(
+#warning a;lsdkjfl;asdkjf;llaskdjf;lskdjf;laskfj
+                MySqlCommand cmd = new MySqlCommand(
                                "INSERT INTO JournalDB.Journal(EntryDate, NumberOfLesson, Room, ProfessorID, SubjectID, StudentID, Mark) " +
-                               $"VALUES('{ entry.EntryDate }', '{entry.NumberOfLesson}', '{entry.Room}', '{entry.Professor.ID}', '{entry.Subject.ID}', '{entry.Student.ID}', '{entry.Mark}');", con);
+                               $"VALUES('{ entry.EntryDate.Date.ToString("yyyy-MM-dd") }', '{entry.NumberOfLesson}', '{entry.Room}', '{entry.Professor.ID}', '{entry.Subject.ID}', '{entry.Student.ID}', '{entry.Mark}');", con);
                     cmd.ExecuteNonQuery();
                     con.Close();
                 }
