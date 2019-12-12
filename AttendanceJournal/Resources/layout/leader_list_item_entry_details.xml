@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="16dp">
+    
+    <TextView
+        android:id="@+id/tv_leader_entry_detail_lesson_numb"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="1 lesson" />
+
+    <TextView
+        android:id="@+id/tv_leader_entry_detail_subject"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Subject"
+        android:textStyle="bold" 
+        android:layout_below="@+id/tv_leader_entry_detail_lesson_numb"/>
+
+    <TextView
+        android:id="@+id/tv_leader_entry_detail_professor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_leader_entry_detail_subject"
+        android:text="Professor name"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tv_leader_entry_detail_room"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_leader_entry_detail_lesson_numb"
+        android:layout_alignParentEnd="true"
+        android:text="room"
+        android:textAlignment="textEnd" />
+
+</RelativeLayout>

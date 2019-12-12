@@ -40,7 +40,7 @@
     <MandroidI18n />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugSymbols>True</DebugSymbols>
+    <DebugSymbols>false</DebugSymbols>
     <DebugType>portable</DebugType>
     <Optimize>True</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -50,7 +50,12 @@
     <AndroidManagedSymbols>true</AndroidManagedSymbols>
     <AndroidUseSharedRuntime>False</AndroidUseSharedRuntime>
     <AndroidLinkMode>SdkOnly</AndroidLinkMode>
-    <EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
+    <EmbedAssembliesIntoApk>true</EmbedAssembliesIntoApk>
+    <AndroidKeyStore>false</AndroidKeyStore>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <AndroidSupportedAbis>x86;arm64-v8a</AndroidSupportedAbis>
+    <AndroidCreatePackagePerAbi>true</AndroidCreatePackagePerAbi>
+    <AndroidPackageFormat>apk</AndroidPackageFormat>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -68,10 +73,14 @@
     <Compile Include="DataBaseHelper.cs" />
     <Compile Include="DeanViewJournal.cs" />
     <Compile Include="DeanViewSubject.cs" />
+    <Compile Include="LeaderDayDetailsFragment.cs" />
     <Compile Include="LeaderDayFragment.cs" />
+    <Compile Include="LeaderLessonDetailsFragment.cs" />
     <Compile Include="LeaderProfessorsFragment.cs" />
+    <Compile Include="LeaderSemesterFragment.cs" />
     <Compile Include="LeaderStudentsFragment.cs" />
     <Compile Include="LeaderSubjectsFragment.cs" />
+    <Compile Include="LeaderWeekFragment.cs" />
     <Compile Include="LoginActivity.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="Objects.cs" />
@@ -373,7 +382,7 @@
     </AndroidResource>
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\layout\leader_list_item_entry_editable.xml">
+    <AndroidResource Include="Resources\layout\leader_list_item_entry_readonly.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>
@@ -383,12 +392,37 @@
     </AndroidResource>
   </ItemGroup>
   <ItemGroup>
+    <AndroidResource Include="Resources\layout\leader_fragment_day_details.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
     <AndroidResource Include="Resources\layout\dean_content_list_journal_student.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>
   <ItemGroup>
+    <AndroidResource Include="Resources\layout\leader_list_item_entry_details.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\menu\item_details.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\leader_fragment_lesson_details.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
     <AndroidResource Include="Resources\layout\dean_view_journal_student.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\leader_fragment_semester.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>

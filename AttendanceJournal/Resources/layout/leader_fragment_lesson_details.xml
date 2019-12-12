@@ -1,4 +1,4 @@
-
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
@@ -11,93 +11,100 @@
         android:paddingVertical="16dp"
         android:textStyle="bold"
         android:text="Lesson information"/>
+  
     
     <LinearLayout 
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_width="150dp"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical"
-        android:text="Date"/>
-
-        <TextView
-            android:id="@+id/tv_leader_add_entry_date"
-            android:textStyle="bold"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@android:style/Widget.Holo.Light.Spinner"/>
-    </LinearLayout>
-    
-    <LinearLayout 
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_width="150dp"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical"
-            android:text="Subject"/>
-
-        <Spinner
-            android:id="@+id/sp_leader_add_entry_subject"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@android:style/Widget.Holo.Light.Spinner"/>
-    </LinearLayout>
-    
-    <LinearLayout 
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_width="150dp"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical"
-            android:text="Professor"/>
-
-        <Spinner
-            android:id="@+id/sp_leader_add_entry_professor"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@android:style/Widget.Holo.Light.Spinner"/>
-    </LinearLayout>
-    
-    <LinearLayout 
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:orientation="horizontal">
-        <TextView
-        android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:text="Room"/>
+        android:paddingVertical="8dp"
+        android:orientation="horizontal">
+        <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Lesson number: "/>
 
-        <EditText
-            android:id="@+id/et_leader_add_entry_room"
+        <TextView
+            android:id="@+id/tv_leader_lesson_number"
             android:inputType="number"
+            android:textStyle="bold"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
     </LinearLayout>
     
     <LinearLayout 
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
+        android:paddingVertical="8dp"
         android:orientation="horizontal">
         <TextView
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:text="Lesson number"/>
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+        android:text="Date: "/>
 
-        <EditText
-            android:id="@+id/et_leader_add_entry_lesson"
-            android:inputType="number"
+        <TextView
+            android:id="@+id/tv_leader_lesson_date"
+            android:textStyle="bold"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+    
+    <LinearLayout 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingVertical="8dp"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:text="Subject: "/>
+
+        <TextView
+            android:id="@+id/tv_leader_lesson_subject"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"/>
+    </LinearLayout>
+    
+    <LinearLayout 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingVertical="8dp"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:text="Professor: "/>
+
+        <TextView
+            android:id="@+id/tv_leader_lesson_professor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"/>
+    </LinearLayout>
+    
+    <LinearLayout 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingVertical="8dp"
+        android:orientation="horizontal">
+        <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Room: "/>
+
+        <TextView
+            android:id="@+id/tv_leader_lesson_room"
+            android:inputType="number"
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
     </LinearLayout>
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingVertical="16dp"
         android:textStyle="bold"
