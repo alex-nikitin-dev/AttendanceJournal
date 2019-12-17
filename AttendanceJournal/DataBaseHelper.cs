@@ -8,15 +8,10 @@ namespace AttendanceJournal
 {
     class DataBaseHelper
     {
-        private static string Address = "specowka.ddns.net";
-        private static string Port = "13110";
-        private static string Id = "journaluser";
-        private static string Pwd = "J1r5_jOngksnL_n8l11!";
-        private static string DBName = "JournalDB";
-
         private static MySqlConnection GetNewConnection()
         {
-            return new MySqlConnection($"Server={Address};Port={Port};database={DBName};User Id={Id};Password={Pwd};charset=utf8");
+            return new MySqlConnection($"Server={ServerAuthorization.ServerAddress};Port={ServerAuthorization.ServerPort}"+
+                $";database={ServerAuthorization.DataBaseName};User Id={ServerAuthorization.UserId};Password={ServerAuthorization.DataBasePwd};charset=utf8");
         }
         public static void AddNewStudent(string name, int group, int phone)
         {
@@ -422,7 +417,7 @@ namespace AttendanceJournal
                     MySqlCommand cmd = new MySqlCommand(
                                "SELECT * " +
                                "FROM JournalDB.Professor " +
-                               $"WHERE ID='{Id}';",
+                               $"WHERE ID='{id}';",
                                con);
                     using (var reader = cmd.ExecuteReader())
                     {

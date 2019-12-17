@@ -29,8 +29,13 @@ namespace AttendanceJournal
             //Trigger click event of Login Button  
             var button = FindViewById<Android.Support.Design.Widget.FloatingActionButton>(Resource.Id.btnLogin);
             button.Click += DoLogin;
+            var btnServerPrefs = FindViewById<Android.Support.Design.Widget.FloatingActionButton>(Resource.Id.btnServerPrefs);
+            btnServerPrefs.Click += ShowServerPrefs;
         }
-
+        public void ShowServerPrefs(object sender, EventArgs e)
+        {
+            StartActivity(typeof(ServerPrefs));
+        }
         public void DoLogin(object sender, EventArgs e)
         {
             try
@@ -48,11 +53,12 @@ namespace AttendanceJournal
                 {
                     Toast.MakeText(this, "Wrong credentials found!", ToastLength.Long).Show();
                 }
+                password.Text = "";
             }
             catch (MySqlException)
             {
-
                 Toast.MakeText(this, "Could not connect to database server", ToastLength.Long).Show();
+                StartActivity(typeof(ServerPrefs));
             }
            
         }
