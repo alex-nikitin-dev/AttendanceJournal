@@ -87,6 +87,8 @@
     <Compile Include="LeaderAddEntryFragment.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ServerAuthorization.cs" />
+    <Compile Include="ServerPrefs.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -423,6 +425,11 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\leader_fragment_semester.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\server_prefs.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>
