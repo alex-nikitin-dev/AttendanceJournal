@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout 
+xmlns:android="http://schemas.android.com/apk/res/android" 
+xmlns:app="http://schemas.android.com/apk/res-auto" 
+xmlns:tools="http://schemas.android.com/tools" 
+android:orientation="vertical" 
+android:layout_width="match_parent" 
+android:layout_height="match_parent">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/login_top">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_margin="30dp">
+                    <EditText
+                        android:id="@+id/txtServerAddress"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Server address / ip"
+                        android:theme="@style/EditTextWhite"
+                        android:inputType="text"/>
+                    <EditText
+                        android:id="@+id/txtServerPort"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Server port"
+                        android:theme="@style/EditTextWhite"
+                        android:inputType="text"/>
+                    <EditText
+                        android:id="@+id/txtDataBaseUserID"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Database user id"
+                        android:theme="@style/EditTextWhite"
+                        android:inputType="text"/>
+                    <EditText
+                        android:id="@+id/txtDataBasePwd"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Database password"
+                        android:theme="@style/EditTextWhite"
+                        android:inputType="textVisiblePassword"/>
+                    <EditText
+                        android:id="@+id/txtDataBaseName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Database name"
+                        android:theme="@style/EditTextWhite"
+                        android:inputType="text"/>
+                </LinearLayout>
+        </FrameLayout>
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/login_bottom">
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/btnSavePrefs"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top"
+                android:layout_marginStart="40dp"
+                app:backgroundTint="#003157"
+                app:srcCompat="@drawable/ic_right_arrow"/>
+        </FrameLayout>
+    </LinearLayout>
+</RelativeLayout>
